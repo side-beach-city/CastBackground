@@ -14,13 +14,25 @@ window.onload = (e) => {
     Array.from(files).forEach(file => {
       let option = document.createElement("option");
       option.text = file.name;
-      option.value = URL.createObjectURL(file);
+      option.value = JSON.stringify({
+        "type": file.type,
+        "url": URL.createObjectURL(file)
+      });
       queue.appendChild(option);
     });
   });
   let queue = document.getElementById("queue")
   queue.addEventListener("click", (e) => {
-    window.opener.document.getElementById("display").
-      src = queue.value;
+    let data = JSON.parse(queue.value);
+    let html = "";
+    switch (true) {
+      case /image\/\w+/.test( data.type):
+        html = `<img src="${data.url}">`;
+        break;
+      default:
+        html = `Unsupported Type ${data.type}`
+        break;
+    }
+    window.opener.document.getElementById("display").innerHTML = html;
   });
 };

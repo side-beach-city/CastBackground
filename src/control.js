@@ -22,7 +22,7 @@ window.onload = (e) => {
     });
   });
   let queue = document.getElementById("queue")
-  queue.addEventListener("click", (e) => {
+  queue.addEventListener("change", (e) => {
     let data = JSON.parse(queue.value);
     let html = "";
     switch (true) {

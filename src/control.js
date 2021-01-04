@@ -29,6 +29,9 @@ window.onload = (e) => {
       case /image\/\w+/.test( data.type):
         html = `<img src="${data.url}">`;
         break;
+      case data.type === "":
+        html = `Unknown MIME Type`;
+        break;
       default:
         html = `Unsupported Type ${data.type}`
         break;

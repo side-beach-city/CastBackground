@@ -26,7 +26,7 @@ window.onload = (e) => {
     let data = JSON.parse(queue.value);
     let html = "";
     switch (true) {
-      case /image\/\w+/.test( data.type):
+      case /image\/\w+/.test( data.type ):
         html = `<img src="${data.url}">`;
         break;
       case data.type === "":

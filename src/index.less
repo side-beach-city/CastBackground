@@ -2,9 +2,19 @@ body {
   margin: 0;
   overflow: hidden;
 }
-
 #display {
   height: 100%;
   width: 100%;
+  overflow: hidden;
+}
+
+#display img {
   position: absolute;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  max-width: 100%;
+  max-height: 100%;
+  transform: translate(-50%, -50%);
 }

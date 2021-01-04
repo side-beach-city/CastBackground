@@ -13,7 +13,7 @@ window.onload = (e) => {
     let queue = document.getElementById("queue")
     Array.from(files).forEach(file => {
       let option = document.createElement("option");
-      option.text = file.name;
+      option.text = `${file.name}(${file.type})`;
       option.value = JSON.stringify({
         "type": file.type,
         "url": URL.createObjectURL(file)

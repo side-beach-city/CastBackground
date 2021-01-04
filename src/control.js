@@ -1,5 +1,5 @@
 window.onload = (e) => {
-  let df = document.getElementById("droppable");
+  let df = document.querySelector(".droppable");
   df.addEventListener("dragover", (e) => {
     e.stopPropagation();
     e.preventDefault();

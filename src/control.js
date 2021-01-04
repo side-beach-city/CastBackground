@@ -29,6 +29,9 @@ window.onload = (e) => {
       case /image\/\w+/.test( data.type ):
         html = `<img src="${data.url}">`;
         break;
+      case /video\/\w+/.test( data.type ):
+        html = `<video src="${data.url}" controls>`;
+        break;
       case data.type === "":
         html = `Unknown MIME Type`;
         break;

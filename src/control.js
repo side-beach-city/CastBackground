@@ -48,7 +48,6 @@ window.onload = (e) => {
       case /text\/\w+/.test( data.type ):
         html = `<p>${data.text}</p>`;
         break;
-    
       case data.type === "":
         html = `Unknown MIME Type`;
         break;

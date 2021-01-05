@@ -65,7 +65,7 @@ window.onload = (e) => {
  */
 function addQueueItem(item){
   let option = document.createElement("option");
-  option.text = `${item.name}(${item.type})`;
+  option.text = `${item.type}:${item.name}`;
   option.value = JSON.stringify(item);
   queue.appendChild(option);
 }

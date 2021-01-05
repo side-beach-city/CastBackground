@@ -12,13 +12,20 @@ window.onload = (e) => {
     let files = e.dataTransfer.files;
     let queue = document.getElementById("queue")
     Array.from(files).forEach(file => {
-      let option = document.createElement("option");
-      option.text = `${file.name}(${file.type})`;
-      option.value = JSON.stringify({
+      let data = {
+        "name": file.name,
         "type": file.type,
         "url": URL.createObjectURL(file)
-      });
-      queue.appendChild(option);
+      }
+      if(file.type.startsWith("text")){
+        reader = new FileReader();
+        reader.addEventListener("load", () => {
+          addQueueItem({...data, ...{text: reader.result}})
+        });
+        reader.readAsText(file);
+      }else{
+        addQueueItem(data);
+      }
     });
   });
   let queue = document.getElementById("queue")
@@ -35,6 +42,13 @@ window.onload = (e) => {
       case /audio\/\w+/.test( data.type ):
         html = `<audio src="${data.url}" controls>`;
         break;
+      case data.type === "text/html":
+        html = data.text;
+        break;
+      case /text\/\w+/.test( data.type ):
+        html = `<p>${data.text}</p>`;
+        break;
+    
       case data.type === "":
         html = `Unknown MIME Type`;
         break;
@@ -45,3 +59,14 @@ window.onload = (e) => {
     window.opener.document.getElementById("display").innerHTML = html;
   });
 };
+
+/**
+ * queueにアイテムを追加する
+ * @param {Object} item 追加する項目
+ */
+function addQueueItem(item){
+  let option = document.createElement("option");
+  option.text = `${item.name}(${item.type})`;
+  option.value = JSON.stringify(item);
+  queue.appendChild(option);
+}

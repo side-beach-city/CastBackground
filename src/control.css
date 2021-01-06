@@ -21,8 +21,7 @@ select#queue {
 }
 
 #controlbar button {
-  height: 80%;
-  margin-right: 2px;
+  margin-right: 4px;
 }
 
 #controlbar div{

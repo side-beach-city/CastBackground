@@ -5,10 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>コントローラ</title>
   <link rel="stylesheet" href="./control.css">
+  <link rel="stylesheet" href="https://cdn.honokak.osaka/honoka/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
   <select id="queue" class="droppable" size="2">
   </select>
+  <div id="controlbar">
+
+    <button id="addurl" title="追加" class="btn btn-sm btn-primary">
+      ➕
+    </button>
+
+    <div class="video audio typecontrol">
+
+      <button id="playpause" title="再生・一時停止" class="btn btn-sm btn-primary">
+        ⏯
+      </button>
+
+      <button id="stop" title="停止"class="btn btn-sm btn-primary">
+        ⏹
+      </button>
+
+    </div>
+    <div class="text typecontrol">
+
+      <select id="fontsize" title="フォントサイズ">
+        <option value="xx-small">極小</option>
+        <option value="small">小さく</option>
+        <option value="medium">標準</option>
+        <option value="large">大きく</option>
+        <option value="xx-large">極大</option>
+      </select>
+
+    </div>
+
+    <div class="custom-control custom-switch">
+      <input type="checkbox" id="autoplay" class="custom-control-input">
+      <label class="custom-control-label" for="autoplay">自動再生</label>
+    </div>
+
+  </div>
+
+  <dialog id="addurl_dialog" class="modal-content">
+    <div class="modal-header"><p>URLを追加</p></div>
+    <div class="modal-body">
+      <input type="text" id="url_text">
+    </div>
+    <div class="modal-footer">
+      <button type="submit" id="url_ok"class="btn btn-primary">OK</button>
+      <button id="url_cancel" class="btn btn-secondary">キャンセル</button>
+    </div>
+  </dialog>
+  <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.honokak.osaka/honoka/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.honokak.osaka/honoka/4.3.1/js/bootstrap.min.js"></script>
   <script src="./control.js"></script>
 </body>
 </html>

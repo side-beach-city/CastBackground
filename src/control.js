@@ -89,6 +89,25 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   });
   dlg.showModal();
 });
+
+document.getElementById("playpause").addEventListener("click", (e) => {
+  let element = window.opener.document.getElementById("content");
+  element.muted = true;
+  if(element.paused){
+    element.play()
+  }else{
+    element.pause();
+  }
+  element.muted = false;
+});
+
+document.getElementById("stop").addEventListener("click", (e) => {
+  let element = window.opener.document.getElementById("content");
+  element.muted = false;
+  element.pause()
+  element.currentTime = 0;
+});
+
 /**
  * queueにアイテムを追加する
  * @param {Object} item 追加する項目

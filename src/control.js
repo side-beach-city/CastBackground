@@ -109,6 +109,16 @@ document.getElementById("stop").addEventListener("click", (e) => {
   element.currentTime = 0;
 });
 
+
+//#region テキストコントロールバー処理
+
+document.getElementById("fontsize").addEventListener("change", (e) => {
+  let element = window.opener.document.getElementById("content");
+  element.style.fontSize = document.getElementById("fontsize").value;
+})
+
+//#endregion
+
 /**
  * queueにアイテムを追加する
  * @param {Object} item 追加する項目

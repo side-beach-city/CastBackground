@@ -31,15 +31,20 @@ window.onload = (e) => {
   queue.addEventListener("change", (e) => {
     let data = JSON.parse(queue.value);
     let html = "";
+    let autoplay = "";
+    let autoplay_chk = document.getElementById("autoplay");
+    if(autoplay_chk.checked){
+      autoplay = " autoplay";
+    }
     switch (true) {
       case /image\/\w+/.test( data.type ):
         html = `<img src="${data.url}">`;
         break;
       case /video\/\w+/.test( data.type ):
-        html = `<video src="${data.url}" controls>`;
+        html = `<video src="${data.url}" controls${autoplay}>`;
         break;
       case /audio\/\w+/.test( data.type ):
-        html = `<audio src="${data.url}" controls>`;
+        html = `<audio src="${data.url}" controls${autoplay}>`;
         break;
       case data.type === "text/html":
         html = data.text;

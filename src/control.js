@@ -10,7 +10,6 @@ window.onload = (e) => {
     e.preventDefault();
 
     let files = e.dataTransfer.files;
-    let queue = document.getElementById("queue")
     Array.from(files).forEach(file => {
       let data = {
         "name": file.name,
@@ -64,6 +63,7 @@ window.onload = (e) => {
  * @param {Object} item 追加する項目
  */
 function addQueueItem(item){
+  let queue = document.getElementById("queue");
   let option = document.createElement("option");
   option.text = `${item.type}:${item.name}`;
   option.value = JSON.stringify(item);

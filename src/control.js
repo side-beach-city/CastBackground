@@ -1,32 +1,5 @@
 window.onload = (e) => {
-  let df = document.querySelector(".droppable");
-  df.addEventListener("dragover", (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "copy";
-  }, false);
-  df.addEventListener("drop", (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    let files = e.dataTransfer.files;
-    Array.from(files).forEach(file => {
-      let data = {
-        "name": file.name,
-        "type": file.type,
-        "url": URL.createObjectURL(file)
-      }
-      if(file.type.startsWith("text")){
-        reader = new FileReader();
-        reader.addEventListener("load", () => {
-          addQueueItem({...data, ...{text: reader.result}})
-        });
-        reader.readAsText(file);
-      }else{
-        addQueueItem(data);
-      }
-    });
-  });
+  dragDropSupport(".droppable");
   let queue = document.getElementById("queue")
   queue.addEventListener("change", (e) => {
     let data = JSON.parse(queue.value);
@@ -125,6 +98,37 @@ document.getElementById("fontsize").addEventListener("change", (e) => {
 })
 
 //#endregion
+
+function dragDropSupport(element) {
+  let df = document.querySelector(element);
+  df.addEventListener("dragover", (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "copy";
+  }, false);
+  df.addEventListener("drop", (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    let files = e.dataTransfer.files;
+    Array.from(files).forEach(file => {
+      let data = {
+        "name": file.name,
+        "type": file.type,
+        "url": URL.createObjectURL(file)
+      }
+      if(file.type.startsWith("text")){
+        reader = new FileReader();
+        reader.addEventListener("load", () => {
+          addQueueItem({...data, ...{text: reader.result}})
+        });
+        reader.readAsText(file);
+      }else{
+        addQueueItem(data);
+      }
+    });
+  });
+}
 
 /**
  * queueにアイテムを追加する。既に登録されているアイテムは登録されない

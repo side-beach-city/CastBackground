@@ -59,6 +59,15 @@ window.onload = (e) => {
         html = `Unsupported Type ${data.type}`
         break;
     }
+    // タイプコントロールを表示
+    Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
+      e.style.display = "none";
+    });
+    let clsn = data.type.split("/").shift();
+    let cls = document.querySelector(`.${clsn}`);
+    if(cls != null){
+      cls.style.display = "inline";
+    }
     window.opener.document.getElementById("display").innerHTML = html;
   });
 };

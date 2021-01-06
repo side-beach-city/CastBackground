@@ -73,6 +73,8 @@ window.onload = (e) => {
   });
 };
 
+//#region 汎用コントロールバー処理
+
 document.getElementById("addurl").addEventListener("click", (e) => {
   let dlg = document.getElementById("addurl_dialog");
   document.getElementById("url_text").value = "";
@@ -90,6 +92,10 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   });
   dlg.showModal();
 });
+
+//#endregion
+
+//#region Audio、Videoコントロールバー処理
 
 document.getElementById("playpause").addEventListener("click", (e) => {
   let element = window.opener.document.getElementById("content");
@@ -109,6 +115,7 @@ document.getElementById("stop").addEventListener("click", (e) => {
   element.currentTime = 0;
 });
 
+//#endregion
 
 //#region テキストコントロールバー処理
 

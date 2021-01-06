@@ -38,19 +38,19 @@ window.onload = (e) => {
     }
     switch (true) {
       case /image\/\w+/.test( data.type ):
-        html = `<img src="${data.url}">`;
+        html = `<img src="${data.url}" id="content">`;
         break;
       case /video\/\w+/.test( data.type ):
-        html = `<video src="${data.url}" controls${autoplay}>`;
+        html = `<video src="${data.url}" controls${autoplay} id="content">`;
         break;
       case /audio\/\w+/.test( data.type ):
-        html = `<audio src="${data.url}" controls${autoplay}>`;
+        html = `<audio src="${data.url}" controls${autoplay} id="content">`;
         break;
       case data.type === "text/html":
         html = data.text;
         break;
       case /text\/\w+/.test( data.type ):
-        html = `<p>${data.text}</p>`;
+        html = `<p id="content">${data.text}</p>`;
         break;
       case data.type === "":
         html = `Unknown MIME Type`;

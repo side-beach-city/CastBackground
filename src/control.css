@@ -29,11 +29,18 @@ select#queue {
 
 #controlbar button {
   margin-right: 4px;
+  margin-top: 4px;
 }
 
 #controlbar div{
   display: inline;
 }
+
+#controlbar .custom-switch{
+  position: relative;
+  top: 8px;
+}
+
 #controlbar .audio, #controlbar .video, #controlbar .text{
   display: none;
 }

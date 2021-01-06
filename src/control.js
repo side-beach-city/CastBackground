@@ -47,16 +47,16 @@ window.onload = (e) => {
         html = `<audio src="${data.url}" controls${autoplay} id="content">`;
         break;
       case data.type === "text/html":
-        html = data.text;
+        html = `<div id="content">${data.text}</div>`;
         break;
       case /text\/\w+/.test( data.type ):
         html = `<p id="content">${data.text}</p>`;
         break;
       case data.type === "":
-        html = `Unknown MIME Type`;
+        html = `<p id="content">Unknown MIME Type</p>`;
         break;
       default:
-        html = `Unsupported Type ${data.type}`
+        html = `<p id="content">Unsupported Type ${data.type}</p>`
         break;
     }
     // タイプコントロールを表示

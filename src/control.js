@@ -127,13 +127,20 @@ document.getElementById("fontsize").addEventListener("change", (e) => {
 //#endregion
 
 /**
- * queueにアイテムを追加する
+ * queueにアイテムを追加する。既に登録されているアイテムは登録されない
  * @param {Object} item 追加する項目
+ * @returns {boolean} 追加できた場合はtrue。
  */
 function addQueueItem(item){
   let queue = document.getElementById("queue");
-  let option = document.createElement("option");
-  option.text = `${item.type}:${item.name}`;
-  option.value = JSON.stringify(item);
-  queue.appendChild(option);
+  let text = `${item.type}:${item.name}`;
+  if(Array.from(queue.options).filter((e) => e.textContent == text).length == 0) {
+    let option = document.createElement("option");
+    option.text = `${item.type}:${item.name}`;
+    option.value = JSON.stringify(item);
+    queue.appendChild(option);
+    return true;
+  }else{
+    return false;
+  }
 }

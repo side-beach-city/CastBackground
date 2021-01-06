@@ -32,6 +32,18 @@ select#queue {
   display: none;
 }
 
+/* #region ダイアログ */
+
+dialog p {
+  margin: 0;
+}
+
+input#url_text {
+  margin: 8px 0;
+}
+
+/* #endregion */
+
 .droppable {
   display: block; /* NOOP */
 }

@@ -58,6 +58,23 @@ window.onload = (e) => {
   });
 };
 
+document.getElementById("addurl").addEventListener("click", (e) => {
+  let dlg = document.getElementById("addurl_dialog");
+  document.getElementById("url_text").value = "";
+  document.getElementById("url_ok").addEventListener("click", (e) => {
+    let data = {
+      "name": document.getElementById("url_text").value,
+      "type": "url",
+      "url": document.getElementById("url_text").value
+    }
+    addQueueItem(data);
+    dlg.close();
+  });
+  document.getElementById("url_cancel").addEventListener("click", (e) => {
+    dlg.close();
+  });
+  dlg.showModal();
+});
 /**
  * queueにアイテムを追加する
  * @param {Object} item 追加する項目

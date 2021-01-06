@@ -63,7 +63,7 @@ window.onload = (e) => {
     Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
       e.style.display = "none";
     });
-    document.getElementById("fontsize").value = "0%";
+    document.getElementById("fontsize").value = "medium";
     let clsn = data.type.split("/").shift();
     let cls = document.querySelector(`.${clsn}`);
     if(cls != null){

@@ -135,11 +135,11 @@ function loadQueue(e) {
     if(cls != null){
       cls.style.display = "inline";
     }
-    window.opener.document.getElementById("display").innerHTML = html;
+    wo.document.getElementById("display").innerHTML = html;
   }else{
     // URL
     let id = window.btoa(data.url);
-    let iframe = window.opener.document.getElementById(id);
+    let iframe = wo.document.getElementById(id);
     iframe.style.display = "";
   }
 }

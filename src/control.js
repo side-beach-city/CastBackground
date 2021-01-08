@@ -113,6 +113,9 @@ function loadQueue(e) {
     case /text\/\w+/.test( data.type ):
       html = `<p id="content">${data.text}</p>`;
       break;
+    case data.type === "url":
+      html = `<iframe id="content" src="${data.url}"></iframe>`;
+      break;
     case data.type === "":
       html = `<p id="content">Unknown MIME Type</p>`;
       break;

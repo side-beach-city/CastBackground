@@ -21,7 +21,7 @@ body {
   height: auto;
 }
 
-#display iframe{
+iframe.content{
   position: absolute;
   width: 100%;
   height: 100%;

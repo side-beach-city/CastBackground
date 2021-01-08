@@ -90,50 +90,58 @@ function dragDropSupport(element) {
 
 function loadQueue(e) {
   let data = JSON.parse(queue.value);
-  let html = "";
-  let autoplay = "";
-  let autoplay_chk = document.getElementById("autoplay");
-  if(autoplay_chk.checked){
-    autoplay = " autoplay";
+  let wo = window.opener;
+  Array.from(wo.document.getElementsByTagName("iframe")).forEach(e => e.style.display="none");
+  wo.document.getElementById("display").innerHTML = "";
+  if(data.type != "url"){
+    // URL以外
+    let html = "";
+    let autoplay = "";
+    let autoplay_chk = document.getElementById("autoplay");
+    if(autoplay_chk.checked){
+      autoplay = " autoplay";
+    }
+    // コンテント読み込み
+    switch (true) {
+      case /image\/\w+/.test( data.type ):
+        html = `<img src="${data.url}" id="content">`;
+        break;
+      case /video\/\w+/.test( data.type ):
+        html = `<video src="${data.url}" controls${autoplay} id="content">`;
+        break;
+      case /audio\/\w+/.test( data.type ):
+        html = `<audio src="${data.url}" controls${autoplay} id="content">`;
+        break;
+      case data.type === "text/html":
+        html = `<div id="content">${data.text}</div>`;
+        break;
+      case /text\/\w+/.test( data.type ):
+        html = `<p id="content">${data.text}</p>`;
+        break;
+      case data.type === "":
+        html = `<p id="content">Unknown MIME Type</p>`;
+        break;
+      default:
+        html = `<p id="content">Unsupported Type ${data.type}</p>`
+        break;
+    }
+    // タイプコントロールを表示
+    Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
+      e.style.display = "none";
+    });
+    document.getElementById("fontsize").value = "medium";
+    let clsn = data.type.split("/").shift();
+    let cls = document.querySelector(`.${clsn}`);
+    if(cls != null){
+      cls.style.display = "inline";
+    }
+    window.opener.document.getElementById("display").innerHTML = html;
+  }else{
+    // URL
+    let id = window.btoa(data.url);
+    let iframe = window.opener.document.getElementById(id);
+    iframe.style.display = "";
   }
-  // コンテント読み込み
-  switch (true) {
-    case /image\/\w+/.test( data.type ):
-      html = `<img src="${data.url}" id="content">`;
-      break;
-    case /video\/\w+/.test( data.type ):
-      html = `<video src="${data.url}" controls${autoplay} id="content">`;
-      break;
-    case /audio\/\w+/.test( data.type ):
-      html = `<audio src="${data.url}" controls${autoplay} id="content">`;
-      break;
-    case data.type === "text/html":
-      html = `<div id="content">${data.text}</div>`;
-      break;
-    case /text\/\w+/.test( data.type ):
-      html = `<p id="content">${data.text}</p>`;
-      break;
-    case data.type === "url":
-      html = `<iframe id="content" src="${data.url}"></iframe>`;
-      break;
-    case data.type === "":
-      html = `<p id="content">Unknown MIME Type</p>`;
-      break;
-    default:
-      html = `<p id="content">Unsupported Type ${data.type}</p>`
-      break;
-  }
-  // タイプコントロールを表示
-  Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
-    e.style.display = "none";
-  });
-  document.getElementById("fontsize").value = "medium";
-  let clsn = data.type.split("/").shift();
-  let cls = document.querySelector(`.${clsn}`);
-  if(cls != null){
-    cls.style.display = "inline";
-  }
-  window.opener.document.getElementById("display").innerHTML = html;
 }
 
 /**
@@ -149,6 +157,15 @@ function addQueueItem(item){
     option.text = `${item.type}:${item.name}`;
     option.value = JSON.stringify(item);
     queue.appendChild(option);
+    if(item.type === "url"){
+      let frame = window.opener.document.createElement("iframe");
+      frame.id = window.btoa(item.url);
+      frame.src = item.url;
+      frame.dataset.nativeUrl = item.url;
+      frame.className = "content";
+      frame.style.display = "none";
+      window.opener.document.body.appendChild(frame);
+    }
     return true;
   }else{
     return false;

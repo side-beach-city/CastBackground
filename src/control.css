@@ -59,6 +59,6 @@ input#url_text {
 
 /* #endregion */
 
-.droppable {
+.droppable, .typecontrol {
   display: block; /* NOOP */
 }

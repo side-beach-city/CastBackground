@@ -10,10 +10,15 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   let dlg = document.getElementById("addurl_dialog");
   document.getElementById("url_text").value = "";
   document.getElementById("url_ok").addEventListener("click", (e) => {
+    let url = document.getElementById("url_text").value;
+    let m = /(?:www\.youtube\.com\/watch\?v=|youtu\.be\/)(\w+)/.exec(url);
+    if(m){
+      url = `https://www.youtube.com/embed/${m[1]}`;
+    }
     let data = {
-      "name": document.getElementById("url_text").value,
+      "name": url,
       "type": "url",
-      "url": document.getElementById("url_text").value
+      "url": url
     }
     addQueueItem(data);
     dlg.close();

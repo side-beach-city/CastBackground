@@ -1,7 +1,7 @@
 window.onload = (e) => {
   dragDropSupport(".droppable");
-  let queue = document.getElementById("queue")
   queue.addEventListener("change", loadQueue);
+  setTimeout(tickTime, 100);
 };
 
 //#region 汎用コントロールバー処理
@@ -10,10 +10,15 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   let dlg = document.getElementById("addurl_dialog");
   document.getElementById("url_text").value = "";
   document.getElementById("url_ok").addEventListener("click", (e) => {
+    let url = document.getElementById("url_text").value;
+    let m = /(?:www\.youtube\.com\/watch\?v=|youtu\.be\/)(\w+)/.exec(url);
+    if(m){
+      url = `https://www.youtube.com/embed/${m[1]}`;
+    }
     let data = {
-      "name": document.getElementById("url_text").value,
+      "name": url,
       "type": "url",
-      "url": document.getElementById("url_text").value
+      "url": url
     }
     addQueueItem(data);
     dlg.close();
@@ -22,6 +27,20 @@ document.getElementById("addurl").addEventListener("click", (e) => {
     dlg.close();
   });
   dlg.showModal();
+});
+
+document.getElementById("removeitem").addEventListener("click", (e) => {
+  let queue = document.getElementById("queue");
+  let data = JSON.parse(queue.value);
+  if(confirm("項目を削除します")){
+    queue.remove(queue.selectedIndex);
+    if(data.type == "url"){
+      let frame = window.opener.document.getElementById(window.btoa(data.url));
+      window.opener.document.body.removeChild(frame);
+    }else{
+      URL.revokeObjectURL(data.url);
+    }
+  }
 });
 
 //#endregion
@@ -89,6 +108,7 @@ function dragDropSupport(element) {
 }
 
 function loadQueue(e) {
+  let queue = document.getElementById("queue");
   let data = JSON.parse(queue.value);
   let wo = window.opener;
   Array.from(wo.document.getElementsByTagName("iframe")).forEach(e => e.style.display="none");
@@ -129,6 +149,7 @@ function loadQueue(e) {
     Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
       e.style.display = "none";
     });
+    document.getElementById("mediatime").textContent = "0:00";
     document.getElementById("fontsize").value = "medium";
     let clsn = data.type.split("/").shift();
     let cls = document.querySelector(`.${clsn}`);
@@ -142,6 +163,26 @@ function loadQueue(e) {
     let iframe = wo.document.getElementById(id);
     iframe.style.display = "";
   }
+}
+
+/**
+ * 定期的に呼び出されるタイマーイベント
+ */
+function tickTime() {
+  let queue = document.getElementById("queue");
+  if(queue.value != ""){
+    let data = JSON.parse(queue.value);
+    if(/(video|audio)\/\w+/.test( data.type )){
+      let media = window.opener.document.getElementById("content");
+      if(media && media.duration && media.currentTime){
+        let time = Math.floor(media.duration - media.currentTime);
+        let m = Math.floor(time / 60);
+        let s = Math.floor((time - m * 60) % 60);
+        document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
+      }
+    }
+  }
+  setTimeout(tickTime, 100);
 }
 
 /**

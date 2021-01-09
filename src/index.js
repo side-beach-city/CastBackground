@@ -1,1 +1,1 @@
-window.open("./src/control.html", "control", "width=300, height=300");
+window.open("./src/control.html", "control", "width=490, height=300");

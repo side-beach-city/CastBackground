@@ -36,6 +36,11 @@ select#queue {
   display: inline;
 }
 
+#controlbar #mediatime{
+  position: relative;
+  top: 4px;
+}
+
 #controlbar .custom-switch{
   position: relative;
   top: 8px;

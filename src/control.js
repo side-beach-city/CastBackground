@@ -1,6 +1,7 @@
 window.onload = (e) => {
   dragDropSupport(".droppable");
   queue.addEventListener("change", loadQueue);
+  setTimeout(tickTime, 100);
 };
 
 //#region 汎用コントロールバー処理
@@ -143,6 +144,7 @@ function loadQueue(e) {
     Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
       e.style.display = "none";
     });
+    document.getElementById("mediatime").textContent = "0:00";
     document.getElementById("fontsize").value = "medium";
     let clsn = data.type.split("/").shift();
     let cls = document.querySelector(`.${clsn}`);
@@ -156,6 +158,26 @@ function loadQueue(e) {
     let iframe = wo.document.getElementById(id);
     iframe.style.display = "";
   }
+}
+
+/**
+ * 定期的に呼び出されるタイマーイベント
+ */
+function tickTime() {
+  let queue = document.getElementById("queue");
+  if(queue.value != ""){
+    let data = JSON.parse(queue.value);
+    if(/(video|audio)\/\w+/.test( data.type )){
+      let media = window.opener.document.getElementById("content");
+      if(media && media.duration && media.currentTime){
+        let time = Math.floor(media.duration - media.currentTime);
+        let m = Math.floor(time / 60);
+        let s = Math.floor((time - m * 60) % 60);
+        document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
+      }
+    }
+  }
+  setTimeout(tickTime, 100);
 }
 
 /**

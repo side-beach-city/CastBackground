@@ -23,6 +23,20 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   dlg.showModal();
 });
 
+document.getElementById("removeitem").addEventListener("click", (e) => {
+  let queue = document.getElementById("queue");
+  let data = JSON.parse(queue.value);
+  if(confirm("項目を削除します")){
+    queue.remove(queue.selectedIndex);
+    if(data.type == "url"){
+      let frame = window.opener.document.getElementById(window.btoa(data.url));
+      window.opener.document.body.removeChild(frame);
+    }else{
+      URL.revokeObjectURL(data.url);
+    }
+  }
+});
+
 //#endregion
 
 //#region Audio、Videoコントロールバー処理

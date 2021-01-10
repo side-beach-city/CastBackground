@@ -1,6 +1,6 @@
 window.onload = (e) => {
   dragDropSupport(".droppable");
-  queue.addEventListener("change", loadQueue);
+  queue.addEventListener("dblclick", loadQueue);
   setTimeout(tickTime, 100);
 };
 
@@ -109,6 +109,10 @@ function dragDropSupport(element) {
 
 function loadQueue(e) {
   let queue = document.getElementById("queue");
+  if(queue.dataset.loaded && queue.dataset.loaded == queue.value){
+    return;
+  }
+  queue.dataset.loaded = queue.value;
   let data = JSON.parse(queue.value);
   let wo = window.opener;
   Array.from(wo.document.getElementsByTagName("iframe")).forEach(e => e.style.display="none");

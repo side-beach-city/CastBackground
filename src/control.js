@@ -76,6 +76,10 @@ document.getElementById("fontsize").addEventListener("change", (e) => {
 
 //#endregion
 
+/**
+ * ドラッグドロップへの対応処理
+ * @param {string} element ドラッグドロップに対応させるエレメントを示す、セレクタ文字列
+ */
 function dragDropSupport(element) {
   let df = document.querySelector(element);
   df.addEventListener("dragover", (e) => {
@@ -107,6 +111,10 @@ function dragDropSupport(element) {
   });
 }
 
+/**
+ * キューリソースの読み込みリクエスト
+ * @param {Event} e イベントオブジェクト
+ */
 function loadQueue(e) {
   let queue = document.getElementById("queue");
   // 表示中項目が読み込み中のものであれば、以降の処理を行わない。

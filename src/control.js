@@ -109,10 +109,12 @@ function dragDropSupport(element) {
 
 function loadQueue(e) {
   let queue = document.getElementById("queue");
+  // 表示中項目が読み込み中のものであれば、以降の処理を行わない。
   if(queue.dataset.loaded && queue.dataset.loaded == queue.value){
     return;
   }
   queue.dataset.loaded = queue.value;
+  //
   let data = JSON.parse(queue.value);
   let wo = window.opener;
   Array.from(wo.document.getElementsByTagName("iframe")).forEach(e => e.style.display="none");

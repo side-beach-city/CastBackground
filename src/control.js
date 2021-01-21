@@ -149,6 +149,9 @@ function loadQueue(e) {
       case data.type === "text/html":
         html = `<div id="content">${data.text}</div>`;
         break;
+      case data.type === "application/pdf":
+        html = `<iframe id="content" src="${data.url}"></iframe>`;
+        break;
       case /text\/\w+/.test( data.type ):
         html = `<p id="content">${data.text}</p>`;
         break;

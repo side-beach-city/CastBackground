@@ -199,30 +199,6 @@ function tickTime() {
         document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
       }
     }
-    // コンテントサイズを画面一杯に
-    let content = window.opener.document.getElementById("content");
-    if(content){
-      if(!/audio\/\w+/.test( data.type )){
-        let wo = window.opener;
-        let l;
-        let s = false;
-        if(content.naturalHeight == content.naturalWidth){
-          if(wo.innerHeight == wo.innerWidth){
-            s = true;
-          }else{
-            l = wo.innerHeight > wo.innerWidth;
-          }
-        }else{
-          l = content.naturalHeight < content.naturalWidth;
-        }
-
-        content.style.width = s || l ? "100%" : "";
-        content.style.height = !s && l ? "" : "100%";
-      }else{
-        content.style.width = "";
-        content.style.height = "";
-      }
-    }
   }
   setTimeout(tickTime, 100);
 }

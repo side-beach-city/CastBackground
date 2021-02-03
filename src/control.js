@@ -1,10 +1,18 @@
+const SETTING_AUTOPLAY = "autoplay";
+const SETTING_CONTROLS = "controls";
 window.onload = (e) => {
   dragDropSupport(".droppable");
   queue.addEventListener("dblclick", loadQueue);
+  let control_chk = document.getElementById("controls");
+  let autoplay_chk = document.getElementById("autoplay");
+  control_chk.checked = localStorage.getItem(SETTING_CONTROLS) === "true";
+  autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
   setTimeout(tickTime, 100);
 };
 
 window.onbeforeunload  = (e) => {
+  localStorage.setItem(SETTING_CONTROLS, document.getElementById("controls").checked);
+  localStorage.setItem(SETTING_AUTOPLAY, document.getElementById("autoplay").checked);
   if(!window.opener.unloading){
     e.preventDefault();
     e.returnValue = "check";

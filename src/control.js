@@ -50,6 +50,18 @@ document.getElementById("removeitem").addEventListener("click", (e) => {
   }
 });
 
+document.getElementById("controls").addEventListener("change", (e) => {
+  let control_chk = document.getElementById("controls");
+  let queue = document.getElementById("queue");
+  if(queue.value != ""){
+    let data = JSON.parse(queue.value);
+    if(/(video|audio)\/\w+/.test( data.type )){
+      let media = window.opener.document.getElementById("content");
+      media.controls = control_chk.checked;
+    }
+  }
+});
+
 //#endregion
 
 //#region Audio、Videoコントロールバー処理

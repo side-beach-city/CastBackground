@@ -29,7 +29,6 @@ select#queue {
 
 #controlbar button {
   margin-right: 4px;
-  margin-top: 4px;
 }
 
 #controlbar div{
@@ -43,7 +42,7 @@ select#queue {
 
 #controlbar .custom-switch{
   position: relative;
-  top: 8px;
+  top: 4px;
 }
 
 #controlbar .audio, #controlbar .video, #controlbar .text{

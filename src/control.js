@@ -5,8 +5,10 @@ window.onload = (e) => {
 };
 
 window.onbeforeunload  = (e) => {
-  e.preventDefault();
-  e.returnValue = "check";
+  if(!window.opener.unloading){
+    e.preventDefault();
+    e.returnValue = "check";
+  }
 }
 
 //#region 汎用コントロールバー処理

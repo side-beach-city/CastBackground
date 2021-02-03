@@ -138,9 +138,14 @@ function loadQueue(e) {
     // URL以外
     let html = "";
     let autoplay = "";
+    let control = "";
     let autoplay_chk = document.getElementById("autoplay");
     if(autoplay_chk.checked){
       autoplay = " autoplay";
+    }
+    let control_chk = document.getElementById("controls");
+    if(control_chk.checked){
+      control = " controls";
     }
     // コンテント読み込み
     switch (true) {
@@ -148,10 +153,10 @@ function loadQueue(e) {
         html = `<img src="${data.url}" id="content">`;
         break;
       case /video\/\w+/.test( data.type ):
-        html = `<video src="${data.url}" controls${autoplay} id="content">`;
+        html = `<video src="${data.url}"${control}${autoplay} id="content">`;
         break;
       case /audio\/\w+/.test( data.type ):
-        html = `<audio src="${data.url}" controls${autoplay} id="content">`;
+        html = `<audio src="${data.url}"${control}${autoplay} id="content">`;
         break;
       case data.type === "text/html":
         html = `<div id="content">${data.text}</div>`;

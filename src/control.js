@@ -4,6 +4,11 @@ window.onload = (e) => {
   setTimeout(tickTime, 100);
 };
 
+window.onbeforeunload  = (e) => {
+  e.preventDefault();
+  e.returnValue = "check";
+}
+
 //#region 汎用コントロールバー処理
 
 document.getElementById("addurl").addEventListener("click", (e) => {

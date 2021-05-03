@@ -255,6 +255,9 @@ function addQueueItem(item){
       frame.dataset.nativeUrl = item.url;
       frame.className = "content";
       frame.style.display = "none";
+      frame.onload = (e) => {
+        option.text = `URL:${item.name}`;
+      }
       window.opener.document.body.appendChild(frame);
     }
     return true;

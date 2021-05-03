@@ -13,6 +13,15 @@ select#queue {
   height: calc(100% - 52px);
 }
 
+select#queue option{
+  border-left: 8px solid red;
+  padding-left: 4px;
+}
+
+select#queue option.loading{
+  border-color: blue !important;
+}
+
 /* #endregion */
 
 /* #region コントロールバー */

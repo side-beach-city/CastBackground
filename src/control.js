@@ -249,6 +249,7 @@ function addQueueItem(item){
     option.value = JSON.stringify(item);
     queue.appendChild(option);
     if(item.type === "url"){
+      option.classList.add("loading")
       let frame = window.opener.document.createElement("iframe");
       frame.id = window.btoa(item.url);
       frame.src = item.url;
@@ -256,7 +257,7 @@ function addQueueItem(item){
       frame.className = "content";
       frame.style.display = "none";
       frame.onload = (e) => {
-        option.text = `URL:${item.name}`;
+        option.classList.remove("loading")
       }
       window.opener.document.body.appendChild(frame);
     }

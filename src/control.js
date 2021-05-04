@@ -2,6 +2,7 @@ const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
 window.onload = (e) => {
   dragDropSupport(".droppable");
+  let queue = document.getElementById("queue");
   queue.addEventListener("dblclick", loadQueue);
   let control_chk = document.getElementById("controls");
   let autoplay_chk = document.getElementById("autoplay");

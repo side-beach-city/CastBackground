@@ -97,10 +97,9 @@ let queue = document.getElementById("queue").addEventListener("change", (e) => {
   let rect = queue.selectedOptions[0].getBoundingClientRect();
   let data = JSON.parse(queue.value);
   let buttonbar = document.getElementById("buttonbar");
-  buttonbar.style.left = `${rect.x + rect.width / 2}px`;
-  buttonbar.style.top = `${rect.y}px`;
-  buttonbar.style.width = `${rect.width / 2}px`;
   buttonbar.style.display = "block";
+  buttonbar.style.left = `${rect.right - buttonbar.getBoundingClientRect().width - 10}px`;
+  buttonbar.style.top = `${rect.y}px`;
   let refreshitem = document.getElementById("refreshitem");
   refreshitem.disabled = data.type != "url";
 });

@@ -16,6 +16,9 @@ select#queue {
 select#queue option{
   border-left: 8px solid red;
   padding-left: 4px;
+  height: 2em;
+  display: flex;
+  align-items: center;
 }
 
 select#queue option.loading{
@@ -56,6 +59,26 @@ select#queue option.loading{
 
 #controlbar .audio, #controlbar .video, #controlbar .text{
   display: none;
+}
+
+/* #endregion */
+
+/* #region ボタンバー */
+
+#buttonbar{
+  background: white;
+  position: absolute;
+  display: none;
+  height: calc(2em - 2px);
+  padding: 1px;
+  margin: 1px;
+  opacity: 0.8;
+}
+
+#buttonbar button{
+  height: 100%;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 /* #endregion */

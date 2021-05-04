@@ -44,20 +44,6 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   dlg.showModal();
 });
 
-document.getElementById("removeitem").addEventListener("click", (e) => {
-  let queue = document.getElementById("queue");
-  let data = JSON.parse(queue.value);
-  if(confirm("項目を削除します")){
-    queue.remove(queue.selectedIndex);
-    if(data.type == "url"){
-      let frame = window.opener.document.getElementById(window.btoa(data.url));
-      window.opener.document.body.removeChild(frame);
-    }else{
-      URL.revokeObjectURL(data.url);
-    }
-  }
-});
-
 document.getElementById("controls").addEventListener("change", (e) => {
   let control_chk = document.getElementById("controls");
   let queue = document.getElementById("queue");
@@ -100,6 +86,35 @@ document.getElementById("fontsize").addEventListener("change", (e) => {
   let element = window.opener.document.getElementById("content");
   element.style.fontSize = document.getElementById("fontsize").value;
 })
+
+//#endregion
+
+//#region ボタンバー処理
+
+let queue = document.getElementById("queue").addEventListener("change", (e) => {
+  let rect = e.target.selectedOptions[0].getBoundingClientRect();
+  let buttonbar = document.getElementById("buttonbar");
+  buttonbar.style.left = `${rect.x + rect.width / 2}px`;
+  buttonbar.style.top = `${rect.y}px`;
+  buttonbar.style.width = `${rect.width / 2}px`;
+  buttonbar.style.display = "block";
+});
+
+document.getElementById("removeitem").addEventListener("click", (e) => {
+  let queue = document.getElementById("queue");
+  let data = JSON.parse(queue.value);
+  if(confirm("項目を削除します")){
+    queue.remove(queue.selectedIndex);
+    if(data.type == "url"){
+      let frame = window.opener.document.getElementById(window.btoa(data.url));
+      window.opener.document.body.removeChild(frame);
+    }else{
+      URL.revokeObjectURL(data.url);
+    }
+    let buttonbar = document.getElementById("buttonbar");
+    buttonbar.style.display = "none";
+  }
+});
 
 //#endregion
 

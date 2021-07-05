@@ -1,5 +1,7 @@
 const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
+const SETTING_DEBUG = "debug";
+window.x_debugmode = false;
 window.onload = (e) => {
   dragDropSupport(".droppable");
   let queue = document.getElementById("queue");
@@ -8,16 +10,22 @@ window.onload = (e) => {
   let autoplay_chk = document.getElementById("autoplay");
   control_chk.checked = localStorage.getItem(SETTING_CONTROLS) === "true";
   autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
+  window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
+  window.x_ownerunload = false;
   setTimeout(tickTime, 100);
 };
 
 window.onbeforeunload  = (e) => {
   localStorage.setItem(SETTING_CONTROLS, document.getElementById("controls").checked);
   localStorage.setItem(SETTING_AUTOPLAY, document.getElementById("autoplay").checked);
-  if(!window.opener.unloading){
+  if(!window.x_ownerunload){
     e.preventDefault();
     e.returnValue = "check";
   }
+}
+
+window.onfocus = (e) => {
+  window.x_ownerunload = false;
 }
 
 //#region 汎用コントロールバー処理

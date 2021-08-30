@@ -231,23 +231,23 @@ function loadQueue(e) {
         html = `<p id="content">Unsupported Type ${data.type}</p>`
         break;
     }
-    // タイプコントロールを表示
-    Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
-      e.style.display = "none";
-    });
-    document.getElementById("mediatime").textContent = "0:00";
-    document.getElementById("fontsize").value = "medium";
-    let clsn = data.type.split("/").shift();
-    let cls = document.querySelector(`.${clsn}`);
-    if(cls != null){
-      cls.style.display = "inline";
-    }
     wo.document.getElementById("display").innerHTML = html;
   }else{
     // URL
     let id = window.btoa(data.url);
     let iframe = wo.document.getElementById(id);
     iframe.style.display = "";
+  }
+  // タイプコントロールを表示
+  Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
+    e.style.display = "none";
+  });
+  document.getElementById("mediatime").textContent = "0:00";
+  document.getElementById("fontsize").value = "medium";
+  let clsn = data.type.split("/").shift();
+  let cls = document.querySelector(`.${clsn}`);
+  if(cls != null){
+    cls.style.display = "inline";
   }
 }
 

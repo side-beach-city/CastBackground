@@ -115,7 +115,7 @@ function set_zoomlevel(zoom, update_seekbar) {
   Array.from(window.opener.document.querySelectorAll("iframe.content")).forEach((e) => {
     e.style.transform = `scale(${zoom})`;
   });
-  document.getElementById("sitezoom_value").textContent = `x${zoom}:`;
+  document.getElementById("sitezoom_value").textContent = `x${(zoom + ".0").substring(0, 3)}:`;
 }
 
 //#endregion

@@ -98,6 +98,28 @@ document.getElementById("fontsize").addEventListener("change", (e) => {
 
 //#endregion
 
+//#region URLコントロールバー処理
+
+document.getElementById("sitezoom").addEventListener("change", (e) => {
+  set_zoomlevel(document.getElementById("sitezoom").value, false);
+});
+
+document.getElementById("sitezoom_reset").addEventListener("click", (e) => {
+  set_zoomlevel(1.0, true);
+});
+
+function set_zoomlevel(zoom, update_seekbar) {
+  if(update_seekbar){
+    document.getElementById("sitezoom").value = zoom;
+  }
+  Array.from(window.opener.document.querySelectorAll("iframe.content")).forEach((e) => {
+    e.style.transform = `scale(${zoom})`;
+  });
+  document.getElementById("sitezoom_value").textContent = `x${zoom}:`;
+}
+
+//#endregion
+
 //#region ボタンバー処理
 
 let queue = document.getElementById("queue").addEventListener("change", (e) => {
@@ -244,6 +266,7 @@ function loadQueue(e) {
   });
   document.getElementById("mediatime").textContent = "0:00";
   document.getElementById("fontsize").value = "medium";
+  set_zoomlevel(1.0, true);
   let clsn = data.type.split("/").shift();
   let cls = document.querySelector(`.${clsn}`);
   if(cls != null){

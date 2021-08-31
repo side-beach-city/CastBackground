@@ -108,6 +108,11 @@ document.getElementById("sitezoom_reset").addEventListener("click", (e) => {
   set_zoomlevel(1.0, true);
 });
 
+/**
+ * URL表示用iframeののズームレベル更新
+ * @param {number} zoom ズームレベル
+ * @param {boolean} update_seekbar シークバーの値を更新するかどうか。false時更新しない
+ */
 function set_zoomlevel(zoom, update_seekbar) {
   if(update_seekbar){
     document.getElementById("sitezoom").value = zoom;

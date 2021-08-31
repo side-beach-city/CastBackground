@@ -119,6 +119,7 @@ function set_zoomlevel(zoom, update_seekbar) {
   }
   Array.from(window.opener.document.querySelectorAll("iframe.content")).forEach((e) => {
     e.style.transform = `scale(${zoom})`;
+    e.style.transformOrigin = zoom > 1.0 ? "left top" : "center";
   });
   document.getElementById("sitezoom_value").textContent = `x${(zoom + ".0").substring(0, 3)}:`;
   window.opener.document.body.style.overflow = zoom > 1.0 ? "scroll" : "hidden";

@@ -121,6 +121,7 @@ function set_zoomlevel(zoom, update_seekbar) {
     e.style.transform = `scale(${zoom})`;
   });
   document.getElementById("sitezoom_value").textContent = `x${(zoom + ".0").substring(0, 3)}:`;
+  window.opener.document.body.style.overflow = zoom > 1.0 ? "scroll" : "hidden";
 }
 
 //#endregion
@@ -277,6 +278,7 @@ function loadQueue(e) {
   if(cls != null){
     cls.style.display = "inline";
   }
+  wo.document.body.style.overflow = "hidden";
 }
 
 /**

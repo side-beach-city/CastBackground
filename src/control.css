@@ -57,7 +57,7 @@ select#queue option.loading{
   top: 4px;
 }
 
-#controlbar .audio, #controlbar .video, #controlbar .text{
+#controlbar div.typecontrol{
   display: none;
 }
 

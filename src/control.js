@@ -98,6 +98,35 @@ document.getElementById("fontsize").addEventListener("change", (e) => {
 
 //#endregion
 
+//#region URLコントロールバー処理
+
+document.getElementById("sitezoom").addEventListener("change", (e) => {
+  set_zoomlevel(document.getElementById("sitezoom").value, false);
+});
+
+document.getElementById("sitezoom_reset").addEventListener("click", (e) => {
+  set_zoomlevel(1.0, true);
+});
+
+/**
+ * URL表示用iframeののズームレベル更新
+ * @param {number} zoom ズームレベル
+ * @param {boolean} update_seekbar シークバーの値を更新するかどうか。false時更新しない
+ */
+function set_zoomlevel(zoom, update_seekbar) {
+  if(update_seekbar){
+    document.getElementById("sitezoom").value = zoom;
+  }
+  Array.from(window.opener.document.querySelectorAll("iframe.content")).forEach((e) => {
+    e.style.transform = `scale(${zoom})`;
+    e.style.transformOrigin = zoom > 1.0 ? "left top" : "center";
+  });
+  document.getElementById("sitezoom_value").textContent = `x${(zoom + ".0").substring(0, 3)}:`;
+  window.opener.document.body.style.overflow = zoom > 1.0 ? "scroll" : "hidden";
+}
+
+//#endregion
+
 //#region ボタンバー処理
 
 let queue = document.getElementById("queue").addEventListener("change", (e) => {
@@ -231,17 +260,6 @@ function loadQueue(e) {
         html = `<p id="content">Unsupported Type ${data.type}</p>`
         break;
     }
-    // タイプコントロールを表示
-    Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
-      e.style.display = "none";
-    });
-    document.getElementById("mediatime").textContent = "0:00";
-    document.getElementById("fontsize").value = "medium";
-    let clsn = data.type.split("/").shift();
-    let cls = document.querySelector(`.${clsn}`);
-    if(cls != null){
-      cls.style.display = "inline";
-    }
     wo.document.getElementById("display").innerHTML = html;
   }else{
     // URL
@@ -249,6 +267,19 @@ function loadQueue(e) {
     let iframe = wo.document.getElementById(id);
     iframe.style.display = "";
   }
+  // タイプコントロールを表示
+  Array.from(document.querySelectorAll(".typecontrol")).forEach((e) => {
+    e.style.display = "none";
+  });
+  document.getElementById("mediatime").textContent = "0:00";
+  document.getElementById("fontsize").value = "medium";
+  set_zoomlevel(1.0, true);
+  let clsn = data.type.split("/").shift();
+  let cls = document.querySelector(`.${clsn}`);
+  if(cls != null){
+    cls.style.display = "inline";
+  }
+  wo.document.body.style.overflow = "hidden";
 }
 
 /**

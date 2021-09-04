@@ -56,11 +56,6 @@ select#queue option.loading{
   top: 4px;
 }
 
-#controlbar .custom-switch{
-  position: relative;
-  top: 4px;
-}
-
 /* #endregion */
 
 /* #region ボタンバー */

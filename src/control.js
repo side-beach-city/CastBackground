@@ -13,6 +13,8 @@ window.onload = (e) => {
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
   setTimeout(tickTime, 100);
+  // ドロップダウンメニューにおけるチェックボックスクリック時のポップアップ解除を行なわない
+  $('.custom-switch').on('click.bs.dropdown.data-api', (event) => event.stopPropagation());
 };
 
 window.onbeforeunload  = (e) => {

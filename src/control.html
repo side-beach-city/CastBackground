@@ -50,14 +50,30 @@
 
     </div>
 
-    <div class="custom-control custom-switch" title="オーディオ・ビデオの自動再生">
-      <input type="checkbox" id="autoplay" class="custom-control-input">
-      <label class="custom-control-label" for="autoplay">自動再生</label>
-    </div>
+    <div class="dropdown dropup">
+      <button type="button" id="config"
+        class="btn btn-sm btn-secondary dropdown-toggle"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false">🛠</button>
 
-    <div class="custom-control custom-switch" title="オーディオ・ビデオのコントローラを表示">
-      <input type="checkbox" id="controls" class="custom-control-input">
-      <label class="custom-control-label" for="controls">操作</label>
+      <div class="dropdown-menu" aria-labelledby="config">
+
+        <div class="dropdown-item">
+          <div class="custom-control custom-switch" title="オーディオ・ビデオの自動再生">
+            <input type="checkbox" id="autoplay" class="custom-control-input">
+            <label class="custom-control-label" for="autoplay">自動再生</label>
+          </div>
+        </div>
+
+        <div class="dropdown-item">
+          <div class="custom-control custom-switch" title="オーディオ・ビデオのコントローラを表示">
+            <input type="checkbox" id="controls" class="custom-control-input">
+            <label class="custom-control-label" for="controls">操作</label>
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </div>

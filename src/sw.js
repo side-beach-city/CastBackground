@@ -2,6 +2,16 @@ importScripts("./files.js")
 
 self.addEventListener('fetch', (event) => {
   console.log('service worker fetch ... ' + event.request);
+  event.respondWith(
+    caches.match(event.request).then((cacheResponse) => {
+      return cacheResponse || fetch(event.request).then((response) => {
+        return caches.open('v1').then((cache) => {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      });
+    })
+  );
 });
 
 self.addEventListener('install', (event) => {

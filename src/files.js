@@ -12,5 +12,5 @@ const CB_ALL_FILES = [
   "/src/files.js",
   "/src/index.css",
   "/src/index.js",
-  "/src/sw.js"
+  "/sw.js"
 ]

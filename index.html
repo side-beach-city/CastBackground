@@ -16,7 +16,7 @@
 <body>
   <script type="module">
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/src/sw.js')
+      navigator.serviceWorker.register('/sw.js', {scope: "/"})
         .then((reg) => {
           console.log('Service worker registered.', reg);
         });

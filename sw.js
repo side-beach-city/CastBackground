@@ -1,4 +1,4 @@
-importScripts("./files.js")
+importScripts("./src/files.js")
 
 self.addEventListener('fetch', (event) => {
   console.log('service worker fetch ... ' + event.request);

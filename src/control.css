@@ -35,10 +35,16 @@ select#queue option.loading{
   box-sizing: border-box;
   border: 3px solid silver;
   background: whitesmoke;
-  padding-top: 8px;
+  padding-top: 2px;
   padding-left: 6px;
 }
 
+#controlbar select.form-control{
+  width: auto;
+  display: inline;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 #controlbar button {
   margin-right: 4px;
 }

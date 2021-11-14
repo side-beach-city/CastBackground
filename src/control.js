@@ -103,7 +103,7 @@ document.getElementById("fontsize").addEventListener("change", (e) => {
 //#region URLコントロールバー処理
 
 document.getElementById("sitezoom").addEventListener("change", (e) => {
-  set_zoomlevel(document.getElementById("sitezoom").value, false);
+  set_zoomlevel(document.getElementById("sitezoom").value.slice(1), false);
 });
 
 document.getElementById("sitezoom_reset").addEventListener("click", (e) => {
@@ -116,14 +116,14 @@ document.getElementById("sitezoom_reset").addEventListener("click", (e) => {
  * @param {boolean} update_seekbar シークバーの値を更新するかどうか。false時更新しない
  */
 function set_zoomlevel(zoom, update_seekbar) {
+  zoom = parseFloat(zoom).toFixed(1);
   if(update_seekbar){
-    document.getElementById("sitezoom").value = zoom;
+    document.getElementById("sitezoom").value = `x${zoom}`;
   }
   Array.from(window.opener.document.querySelectorAll("iframe.content")).forEach((e) => {
     e.style.transform = `scale(${zoom})`;
     e.style.transformOrigin = zoom > 1.0 ? "left top" : "center";
   });
-  document.getElementById("sitezoom_value").textContent = `x${(zoom + ".0").substring(0, 3)}:`;
   window.opener.document.body.style.overflow = zoom > 1.0 ? "scroll" : "hidden";
 }
 

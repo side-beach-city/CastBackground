@@ -117,13 +117,23 @@ document.getElementById("sitezoom_reset").addEventListener("click", (e) => {
  * @param {boolean} update_seekbar シークバーの値を更新するかどうか。false時更新しない
  */
 function set_zoomlevel(zoom, update_seekbar) {
+  const TRANSLATE_TAGS = ["img", "video", "audio"];
   zoom = parseFloat(zoom).toFixed(1);
   if(update_seekbar){
     document.getElementById("sitezoom").value = `x${zoom}`;
   }
-  Array.from(window.opener.document.querySelectorAll("iframe.content")).forEach((e) => {
-    e.style.transform = `scale(${zoom})`;
-    e.style.transformOrigin = zoom > 1.0 ? "left top" : "center";
+  Array.from(window.opener.document.querySelectorAll(".content")).forEach((e) => {
+    let style = `scale(${zoom})`;
+    let origin;
+    if(TRANSLATE_TAGS.includes(e.tagName.toLowerCase()))
+    {
+      style += " translate(-50%, -50%)";
+      origin = "left top";
+    }else{
+      origin = zoom > 1.0 ? "left top" : "center";
+    }
+    e.style.transform = style;
+    e.style.transformOrigin = origin;
   });
   window.opener.document.body.style.overflow = zoom > 1.0 ? "scroll" : "hidden";
 }
@@ -239,28 +249,28 @@ function loadQueue(e) {
     // コンテント読み込み
     switch (true) {
       case /image\/\w+/.test( data.type ):
-        html = `<img src="${data.url}" id="content">`;
+        html = `<img src="${data.url}" class="content">`;
         break;
       case /video\/\w+/.test( data.type ):
-        html = `<video src="${data.url}"${control}${autoplay} id="content">`;
+        html = `<video src="${data.url}"${control}${autoplay} class="content">`;
         break;
       case /audio\/\w+/.test( data.type ):
-        html = `<audio src="${data.url}"${control}${autoplay} id="content">`;
+        html = `<audio src="${data.url}"${control}${autoplay} class="content">`;
         break;
       case data.type === "text/html":
-        html = `<div id="content">${data.text}</div>`;
+        html = `<div class="content">${data.text}</div>`;
         break;
       case data.type === "application/pdf":
-        html = `<iframe id="content" src="${data.url}"></iframe>`;
+        html = `<iframe class="content" src="${data.url}"></iframe>`;
         break;
       case /text\/\w+/.test( data.type ):
-        html = `<p id="content">${data.text}</p>`;
+        html = `<p class="content">${data.text}</p>`;
         break;
       case data.type === "":
-        html = `<p id="content">Unknown MIME Type</p>`;
+        html = `<p class="content">Unknown MIME Type</p>`;
         break;
       default:
-        html = `<p id="content">Unsupported Type ${data.type}</p>`
+        html = `<p class="content">Unsupported Type ${data.type}</p>`
         break;
     }
     wo.document.getElementById("display").innerHTML = html;

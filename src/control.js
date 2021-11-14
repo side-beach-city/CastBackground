@@ -3,6 +3,7 @@ const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
 window.x_debugmode = false;
 window.onload = (e) => {
+  set_zoomlevel(1.0, true);
   dragDropSupport(".droppable");
   let queue = document.getElementById("queue");
   queue.addEventListener("dblclick", loadQueue);

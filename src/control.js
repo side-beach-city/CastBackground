@@ -127,10 +127,16 @@ function set_zoomlevel(zoom, update_seekbar) {
     let origin;
     if(TRANSLATE_TAGS.includes(e.tagName.toLowerCase()))
     {
-      style += " translate(-50%, -50%)";
       origin = "left top";
+      if(zoom > 1.0){
+        e.style.position = "static";
+      }else{
+        e.style.position = "absolute";
+        style += " translate(-50%, -50%)";
+      }
     }else{
       origin = zoom > 1.0 ? "left top" : "center";
+      e.style.position = "absolute";
     }
     e.style.transform = style;
     e.style.transformOrigin = origin;

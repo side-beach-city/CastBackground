@@ -62,6 +62,9 @@ select#queue option.loading{
   top: 4px;
 }
 
+#controlbar #version{
+  margin:0;
+}
 /* #endregion */
 
 /* #region ボタンバー */

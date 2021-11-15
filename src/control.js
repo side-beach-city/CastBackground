@@ -1,6 +1,8 @@
 const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
+const APPNAME = "CastBackground";
+const APPVERSION = "1.2.0";
 window.x_debugmode = false;
 window.onload = (e) => {
   set_zoomlevel(1.0, true);
@@ -14,8 +16,10 @@ window.onload = (e) => {
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
   setTimeout(tickTime, 100);
+  document.getElementById("version").textContent = `${APPNAME} Version ${APPVERSION}.`;
   // ドロップダウンメニューにおけるチェックボックスクリック時のポップアップ解除を行なわない
   $('.custom-switch').on('click.bs.dropdown.data-api', (event) => event.stopPropagation());
+  $('#version').on('click.bs.dropdown.data-api', (event) => event.stopPropagation());
 };
 
 window.onbeforeunload  = (e) => {

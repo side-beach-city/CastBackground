@@ -62,7 +62,7 @@ document.getElementById("controls").addEventListener("change", (e) => {
   if(queue.value != ""){
     let data = JSON.parse(queue.value);
     if(/(video|audio)\/\w+/.test( data.type )){
-      let media = window.opener.document.getElementById("content");
+      let media = window.opener.document.querySelector(".content");
       media.controls = control_chk.checked;
     }
   }
@@ -73,7 +73,7 @@ document.getElementById("controls").addEventListener("change", (e) => {
 //#region Audio、Videoコントロールバー処理
 
 document.getElementById("playpause").addEventListener("click", (e) => {
-  let element = window.opener.document.getElementById("content");
+  let element = window.opener.document.querySelector(".content");
   element.muted = true;
   if(element.paused){
     element.play()
@@ -84,7 +84,7 @@ document.getElementById("playpause").addEventListener("click", (e) => {
 });
 
 document.getElementById("stop").addEventListener("click", (e) => {
-  let element = window.opener.document.getElementById("content");
+  let element = window.opener.document.querySelector(".content");
   element.muted = false;
   element.pause()
   element.currentTime = 0;
@@ -95,7 +95,7 @@ document.getElementById("stop").addEventListener("click", (e) => {
 //#region テキストコントロールバー処理
 
 document.getElementById("fontsize").addEventListener("change", (e) => {
-  let element = window.opener.document.getElementById("content");
+  let element = window.opener.document.querySelector(".content");
   element.style.fontSize = document.getElementById("fontsize").value;
 })
 
@@ -312,7 +312,7 @@ function tickTime() {
     let data = JSON.parse(queue.value);
     // video/audioの場合、残り時間表示
     if(/(video|audio)\/\w+/.test( data.type )){
-      let media = window.opener.document.getElementById("content");
+      let media = window.opener.document.querySelector(".content");
       if(media && media.duration && media.currentTime){
         let time = Math.floor(media.duration - media.currentTime);
         let m = Math.floor(time / 60);

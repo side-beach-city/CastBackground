@@ -135,7 +135,8 @@ function set_zoomlevel(zoom, update_seekbar) {
     e.style.transform = style;
     e.style.transformOrigin = origin;
   });
-  window.opener.document.body.style.overflow = zoom > 1.0 ? "scroll" : "hidden";
+  window.opener.document.getElementById("display").style.overflow = zoom > 1.0 ? "scroll" : "hidden";
+  
 }
 
 //#endregion
@@ -232,7 +233,13 @@ function loadQueue(e) {
   let data = JSON.parse(queue.value);
   let wo = window.opener;
   Array.from(wo.document.getElementsByTagName("iframe")).forEach(e => e.style.display="none");
-  wo.document.getElementById("display").innerHTML = "";
+  Array.from(wo.document.querySelectorAll(".content")).forEach((e) => {
+    if(e.tagName.toLowerCase() == "iframe"){
+      e.classList.remove("content");
+    }else{
+      e.remove();
+    }
+  });
   if(data.type != "url"){
     // URL以外
     let html = "";
@@ -273,11 +280,12 @@ function loadQueue(e) {
         html = `<p class="content">Unsupported Type ${data.type}</p>`
         break;
     }
-    wo.document.getElementById("display").innerHTML = html;
+    wo.document.getElementById("display").innerHTML += html;
   }else{
     // URL
     let id = window.btoa(data.url);
     let iframe = wo.document.getElementById(id);
+    iframe.classList.add("content");
     iframe.style.display = "";
   }
   // タイプコントロールを表示
@@ -335,12 +343,11 @@ function addQueueItem(item){
       frame.id = window.btoa(item.url);
       frame.src = item.url;
       frame.dataset.nativeUrl = item.url;
-      frame.className = "content";
       frame.style.display = "none";
       frame.onload = (e) => {
         option.classList.remove("loading")
       }
-      window.opener.document.body.appendChild(frame);
+      window.opener.document.getElementById("display").appendChild(frame);
     }
     return true;
   }else{

@@ -300,7 +300,6 @@ function loadQueue(e) {
   if(cls != null){
     cls.style.display = "inline";
   }
-  wo.document.body.style.overflow = "hidden";
 }
 
 /**

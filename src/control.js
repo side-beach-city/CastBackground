@@ -3,6 +3,7 @@ const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
 window.x_debugmode = false;
 window.onload = (e) => {
+  set_zoomlevel(1.0, true);
   dragDropSupport(".droppable");
   let queue = document.getElementById("queue");
   queue.addEventListener("dblclick", loadQueue);
@@ -61,7 +62,7 @@ document.getElementById("controls").addEventListener("change", (e) => {
   if(queue.value != ""){
     let data = JSON.parse(queue.value);
     if(/(video|audio)\/\w+/.test( data.type )){
-      let media = window.opener.document.getElementById("content");
+      let media = window.opener.document.querySelector(".content");
       media.controls = control_chk.checked;
     }
   }
@@ -72,7 +73,7 @@ document.getElementById("controls").addEventListener("change", (e) => {
 //#region Audio、Videoコントロールバー処理
 
 document.getElementById("playpause").addEventListener("click", (e) => {
-  let element = window.opener.document.getElementById("content");
+  let element = window.opener.document.querySelector(".content");
   element.muted = true;
   if(element.paused){
     element.play()
@@ -83,7 +84,7 @@ document.getElementById("playpause").addEventListener("click", (e) => {
 });
 
 document.getElementById("stop").addEventListener("click", (e) => {
-  let element = window.opener.document.getElementById("content");
+  let element = window.opener.document.querySelector(".content");
   element.muted = false;
   element.pause()
   element.currentTime = 0;
@@ -94,7 +95,7 @@ document.getElementById("stop").addEventListener("click", (e) => {
 //#region テキストコントロールバー処理
 
 document.getElementById("fontsize").addEventListener("change", (e) => {
-  let element = window.opener.document.getElementById("content");
+  let element = window.opener.document.querySelector(".content");
   element.style.fontSize = document.getElementById("fontsize").value;
 })
 
@@ -103,7 +104,7 @@ document.getElementById("fontsize").addEventListener("change", (e) => {
 //#region URLコントロールバー処理
 
 document.getElementById("sitezoom").addEventListener("change", (e) => {
-  set_zoomlevel(document.getElementById("sitezoom").value, false);
+  set_zoomlevel(document.getElementById("sitezoom").value.slice(1), false);
 });
 
 document.getElementById("sitezoom_reset").addEventListener("click", (e) => {
@@ -116,15 +117,32 @@ document.getElementById("sitezoom_reset").addEventListener("click", (e) => {
  * @param {boolean} update_seekbar シークバーの値を更新するかどうか。false時更新しない
  */
 function set_zoomlevel(zoom, update_seekbar) {
+  const TRANSLATE_TAGS = ["img", "video", "audio"];
+  zoom = parseFloat(zoom).toFixed(1);
   if(update_seekbar){
-    document.getElementById("sitezoom").value = zoom;
+    document.getElementById("sitezoom").value = `x${zoom}`;
   }
-  Array.from(window.opener.document.querySelectorAll("iframe.content")).forEach((e) => {
-    e.style.transform = `scale(${zoom})`;
-    e.style.transformOrigin = zoom > 1.0 ? "left top" : "center";
+  Array.from(window.opener.document.querySelectorAll(".content")).forEach((e) => {
+    let style = `scale(${zoom})`;
+    let origin;
+    if(TRANSLATE_TAGS.includes(e.tagName.toLowerCase()))
+    {
+      origin = "left top";
+      if(zoom > 1.0){
+        e.style.position = "static";
+      }else{
+        e.style.position = "absolute";
+        style += " translate(-50%, -50%)";
+      }
+    }else{
+      origin = zoom > 1.0 ? "left top" : "center";
+      e.style.position = "absolute";
+    }
+    e.style.transform = style;
+    e.style.transformOrigin = origin;
   });
-  document.getElementById("sitezoom_value").textContent = `x${(zoom + ".0").substring(0, 3)}:`;
-  window.opener.document.body.style.overflow = zoom > 1.0 ? "scroll" : "hidden";
+  window.opener.document.getElementById("display").style.overflow = zoom > 1.0 ? "scroll" : "hidden";
+  
 }
 
 //#endregion
@@ -221,7 +239,13 @@ function loadQueue(e) {
   let data = JSON.parse(queue.value);
   let wo = window.opener;
   Array.from(wo.document.getElementsByTagName("iframe")).forEach(e => e.style.display="none");
-  wo.document.getElementById("display").innerHTML = "";
+  Array.from(wo.document.querySelectorAll(".content")).forEach((e) => {
+    if(e.tagName.toLowerCase() == "iframe"){
+      e.classList.remove("content");
+    }else{
+      e.remove();
+    }
+  });
   if(data.type != "url"){
     // URL以外
     let html = "";
@@ -238,35 +262,36 @@ function loadQueue(e) {
     // コンテント読み込み
     switch (true) {
       case /image\/\w+/.test( data.type ):
-        html = `<img src="${data.url}" id="content">`;
+        html = `<img src="${data.url}" class="content">`;
         break;
       case /video\/\w+/.test( data.type ):
-        html = `<video src="${data.url}"${control}${autoplay} id="content">`;
+        html = `<video src="${data.url}"${control}${autoplay} class="content">`;
         break;
       case /audio\/\w+/.test( data.type ):
-        html = `<audio src="${data.url}"${control}${autoplay} id="content">`;
+        html = `<audio src="${data.url}"${control}${autoplay} class="content">`;
         break;
       case data.type === "text/html":
-        html = `<div id="content">${data.text}</div>`;
+        html = `<div class="content">${data.text}</div>`;
         break;
       case data.type === "application/pdf":
-        html = `<iframe id="content" src="${data.url}"></iframe>`;
+        html = `<iframe class="content" src="${data.url}"></iframe>`;
         break;
       case /text\/\w+/.test( data.type ):
-        html = `<p id="content">${data.text}</p>`;
+        html = `<p class="content">${data.text}</p>`;
         break;
       case data.type === "":
-        html = `<p id="content">Unknown MIME Type</p>`;
+        html = `<p class="content">Unknown MIME Type</p>`;
         break;
       default:
-        html = `<p id="content">Unsupported Type ${data.type}</p>`
+        html = `<p class="content">Unsupported Type ${data.type}</p>`
         break;
     }
-    wo.document.getElementById("display").innerHTML = html;
+    wo.document.getElementById("display").innerHTML += html;
   }else{
     // URL
     let id = window.btoa(data.url);
     let iframe = wo.document.getElementById(id);
+    iframe.classList.add("content");
     iframe.style.display = "";
   }
   // タイプコントロールを表示
@@ -281,7 +306,6 @@ function loadQueue(e) {
   if(cls != null){
     cls.style.display = "inline";
   }
-  wo.document.body.style.overflow = "hidden";
 }
 
 /**
@@ -293,7 +317,7 @@ function tickTime() {
     let data = JSON.parse(queue.value);
     // video/audioの場合、残り時間表示
     if(/(video|audio)\/\w+/.test( data.type )){
-      let media = window.opener.document.getElementById("content");
+      let media = window.opener.document.querySelector(".content");
       if(media && media.duration && media.currentTime){
         let time = Math.floor(media.duration - media.currentTime);
         let m = Math.floor(time / 60);
@@ -324,12 +348,11 @@ function addQueueItem(item){
       frame.id = window.btoa(item.url);
       frame.src = item.url;
       frame.dataset.nativeUrl = item.url;
-      frame.className = "content";
       frame.style.display = "none";
       frame.onload = (e) => {
         option.classList.remove("loading")
       }
-      window.opener.document.body.appendChild(frame);
+      window.opener.document.getElementById("display").appendChild(frame);
     }
     return true;
   }else{

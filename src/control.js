@@ -2,7 +2,7 @@ const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
 const APPNAME = "CastBackground";
-const APPVERSION = "1.2.0";
+const APPVERSION = "1.3.0";
 window.x_debugmode = false;
 window.onload = (e) => {
   set_zoomlevel(1.0, true);

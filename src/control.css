@@ -45,9 +45,6 @@ select#queue option.loading{
   padding-top: 0;
   padding-bottom: 0;
 }
-#controlbar button {
-  margin-right: 4px;
-}
 
 #controlbar > div{
   display: inline;

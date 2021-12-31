@@ -94,6 +94,16 @@ document.getElementById("stop").addEventListener("click", (e) => {
   element.currentTime = 0;
 });
 
+document.getElementById("back10").addEventListener("click", (e) => {
+  let element = window.opener.document.querySelector(".content");
+  element.currentTime = Math.max(element.currentTime - 10, 0);
+});
+
+document.getElementById("ff10").addEventListener("click", (e) => {
+  let element = window.opener.document.querySelector(".content");
+  element.currentTime = Math.min(element.currentTime + 10, element.duration);
+});
+
 //#endregion
 
 //#region テキストコントロールバー処理

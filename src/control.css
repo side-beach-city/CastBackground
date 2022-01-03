@@ -77,14 +77,22 @@ select#queue option.loading{
   display: none;
 }
 
-#controlbar #mediatime{
-  position: relative;
-  top: 4px;
-}
-
 #controlbar #version{
   margin:0;
 }
+
+#controlbar #typecontrols #mediainfo{
+  display: inline-block;
+  margin-left: 10px;
+}
+
+#controlbar #typecontrols #mediainfo #mediaseek{
+  width: 160px;
+  height: 6px;
+  border-radius: 5px;
+  background: linear-gradient(#ccc, #ccc) no-repeat #eee;
+}
+
 /* #endregion */
 
 /* #region ボタンバー */

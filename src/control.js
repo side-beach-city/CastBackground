@@ -15,7 +15,6 @@ window.onload = (e) => {
   autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
-  setTimeout(tickTime, 100);
   document.getElementById("version").textContent = `${APPNAME} Version ${APPVERSION}.`;
   // ドロップダウンメニューにおけるチェックボックスクリック時のポップアップ解除を行なわない
   $('.custom-switch').on('click.bs.dropdown.data-api', (event) => event.stopPropagation());
@@ -328,28 +327,20 @@ function loadQueue(e) {
       })
     }
   }
-  document.getElementById("zoomcontrol").style.display = "inline";
-}
-
-/**
- * 定期的に呼び出されるタイマーイベント
- */
-function tickTime() {
-  let queue = document.getElementById("queue");
-  if(queue.value != ""){
-    let data = JSON.parse(queue.value);
-    // video/audioの場合、残り時間表示
-    if(/(video|audio)\/\w+/.test( data.type )){
-      let media = window.opener.document.querySelector(".content");
+  if(/(video|audio)\/\w+/.test( data.type )){
+    let media = window.opener.document.querySelector(".content");
+    media.addEventListener("timeupdate", (e) => {
       if(media && media.duration && media.currentTime){
         let time = Math.floor(media.duration - media.currentTime);
         let m = Math.floor(time / 60);
         let s = Math.floor((time - m * 60) % 60);
+        const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
         document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
+        document.getElementById('mediaseek').style.backgroundSize = percent + '%'
       }
-    }
+    });
   }
-  setTimeout(tickTime, 100);
+  document.getElementById("zoomcontrol").style.display = "inline";
 }
 
 /**

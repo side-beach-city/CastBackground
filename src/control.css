@@ -91,6 +91,7 @@ select#queue option.loading{
   height: 6px;
   border-radius: 5px;
   background: linear-gradient(#ccc, #ccc) no-repeat #eee;
+  cursor: pointer;
 }
 
 /* #endregion */

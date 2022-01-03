@@ -103,6 +103,19 @@ document.getElementById("ff10").addEventListener("click", (e) => {
   element.currentTime = Math.min(element.currentTime + 10, element.duration);
 });
 
+document.getElementById('mediaseek').addEventListener("click", (e) => {
+  let media = window.opener.document.querySelector(".content");
+  const duration = Math.round(media.duration)
+  if(!isNaN(duration)){
+    const mouse = e.pageX;
+    const element = document.getElementById('mediaseek');
+    const rect = element.getBoundingClientRect();
+    const position = rect.left + window.pageXOffset;
+    const offset = mouse - position;
+    const width = rect.right - rect.left;
+    media.currentTime = Math.round(duration * (offset / width));
+  }
+})
 //#endregion
 
 //#region テキストコントロールバー処理

@@ -319,7 +319,16 @@ function loadQueue(e) {
   let cls = document.querySelector(`.${clsn}`);
   if(cls != null){
     cls.style.display = "inline";
+    let controlbar = document.getElementById("controlbar");
+    if(controlbar.offsetHeight < 80){
+      controlbar.style.height = `${controlbar.offsetHeight * 2}px`;
+      document.getElementById("typecontrols").style.display = "block";
+      Array.from(controlbar.querySelectorAll(".subcontrolbar")).forEach((e) => {
+        e.classList.add("multiline");
+      })
+    }
   }
+  document.getElementById("zoomcontrol").style.display = "inline";
 }
 
 /**

@@ -6,6 +6,12 @@ body {
   overflow: hidden;
 }
 
+div#container {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
 /* #region キューリスト */
 
 select#queue {
@@ -37,6 +43,27 @@ select#queue option.loading{
   background: whitesmoke;
   padding-top: 2px;
   padding-left: 6px;
+  transition-duration: .2s;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+}
+
+#controlbar div.subcontrolbar#typecontrols {
+  display: none;
+}
+
+#controlbar div.subcontrolbar {
+  transition-duration: .2s;
+}
+
+#controlbar div.subcontrolbar.multiline {
+  height: 40px;
+  transition-duration: .2s;
+}
+
+#controlbar > div#maincontrols > div:not(.typecontrol) {
+  display: inline;
 }
 
 #controlbar select.form-control{
@@ -46,11 +73,7 @@ select#queue option.loading{
   padding-bottom: 0;
 }
 
-#controlbar > div{
-  display: inline;
-}
-
-#controlbar > div.typecontrol{
+#controlbar div.typecontrol{
   display: none;
 }
 

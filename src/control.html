@@ -10,94 +10,104 @@
   <link rel="apple-touch-icon" sizes="192x192" href="../res/iconconfig-192.png">
 </head>
 <body>
-  <select id="queue" class="droppable" size="2">
-  </select>
-  <div id="controlbar">
-
-    <button id="addurl" title="追加" class="btn btn-sm btn-primary">
-      ➕
-    </button>
-    <div class="video audio typecontrol">
-
-      <div class="btn-group">
-        <button id="playpause" title="再生・一時停止" class="btn btn-sm btn-outline-primary">
-          ⏯
-        </button>
-
-        <button id="stop" title="停止"class="btn btn-sm btn-outline-primary">
-          ⏹
-        </button>
-
-        <button id="back10" title="10秒戻す" class="btn btn-sm btn-outline-primary">
-          ⏪
-        </button>
-
-        <button id="ff10" title="10秒進める" class="btn btn-sm btn-outline-primary">
-          ⏩
-        </button>
-      </div>
-
-      <span id="mediatime"></span>
-    </div>
-    <div class="text typecontrol">
-
-      <select id="fontsize" title="フォントサイズ">
-        <option value="xx-small">極小</option>
-        <option value="small">小さく</option>
-        <option value="medium">標準</option>
-        <option value="large">大きく</option>
-        <option value="xx-large">極大</option>
-      </select>
-
-    </div>
-
-    <select id="sitezoom" title="ズーム" class="form-control">
-      <option>x0.2</option>
-      <option>x0.5</option>
-      <option>x0.8</option>
-      <option>x1.0</option>
-      <option>x1.2</option>
-      <option>x1.5</option>
-      <option>x1.8</option>
-      <option>x2.0</option>
-      <option>x3.0</option>
-      <option>x4.0</option>
-      <option>x5.0</option>
+  <div id="container">
+    <select id="queue" class="droppable" size="2">
     </select>
-    <button id="sitezoom_reset" title="ズームレベルのリセット" class="btn btn-sm btn-outline-primary">
-      🔅
-    </button>
+    <div id="controlbar">
+      <div id="maincontrols" class="subcontrolbar">
+        <button id="addurl" title="追加" class="btn btn-sm btn-primary">
+          ➕
+        </button>
 
-    <div class="dropdown dropup">
-      <button type="button" id="config"
-        class="btn btn-sm btn-secondary dropdown-toggle"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false">🛠</button>
-
-      <div class="dropdown-menu" aria-labelledby="config">
-
-        <div class="dropdown-item">
-          <div class="custom-control custom-switch" title="オーディオ・ビデオの自動再生">
-            <input type="checkbox" id="autoplay" class="custom-control-input">
-            <label class="custom-control-label" for="autoplay">自動再生</label>
-          </div>
+        <div class="typecontrol" id="zoomcontrol">
+          <select id="sitezoom" title="ズーム" class="form-control">
+            <option>x0.2</option>
+            <option>x0.5</option>
+            <option>x0.8</option>
+            <option>x1.0</option>
+            <option>x1.2</option>
+            <option>x1.5</option>
+            <option>x1.8</option>
+            <option>x2.0</option>
+            <option>x3.0</option>
+            <option>x4.0</option>
+            <option>x5.0</option>
+          </select>
+          <button id="sitezoom_reset" title="ズームレベルのリセット" class="btn btn-sm btn-outline-primary">
+            🔅
+          </button>
         </div>
 
-        <div class="dropdown-item">
-          <div class="custom-control custom-switch" title="オーディオ・ビデオのコントローラを表示">
-            <input type="checkbox" id="controls" class="custom-control-input">
-            <label class="custom-control-label" for="controls">操作</label>
-          </div>
-        </div>
+        <div class="dropdown dropup">
+          <button type="button" id="config"
+            class="btn btn-sm btn-secondary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">🛠</button>
 
-        <div class="dropdown-item">
-          <p id="version"></p>
+          <div class="dropdown-menu" aria-labelledby="config">
+
+            <div class="dropdown-item">
+              <div class="custom-control custom-switch" title="オーディオ・ビデオの自動再生">
+                <input type="checkbox" id="autoplay" class="custom-control-input">
+                <label class="custom-control-label" for="autoplay">自動再生</label>
+              </div>
+            </div>
+
+            <div class="dropdown-item">
+              <div class="custom-control custom-switch" title="オーディオ・ビデオのコントローラを表示">
+                <input type="checkbox" id="controls" class="custom-control-input">
+                <label class="custom-control-label" for="controls">操作</label>
+              </div>
+            </div>
+
+            <div class="dropdown-item">
+              <p id="version"></p>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
-    </div>
 
+      <div id="typecontrols" class="subcontrolbar">
+        <div class="video audio typecontrol">
+
+          <div class="btn-group">
+            <button id="playpause" title="再生・一時停止" class="btn btn-sm btn-outline-primary">
+              ⏯
+            </button>
+    
+            <button id="stop" title="停止"class="btn btn-sm btn-outline-primary">
+              ⏹
+            </button>
+    
+            <button id="back10" title="10秒戻す" class="btn btn-sm btn-outline-primary">
+              ⏪
+            </button>
+    
+            <button id="ff10" title="10秒進める" class="btn btn-sm btn-outline-primary">
+              ⏩
+            </button>
+          </div>
+    
+          <span id="mediatime"></span>
+        </div>
+        <div class="text typecontrol">
+    
+          <select id="fontsize" title="フォントサイズ">
+            <option value="xx-small">極小</option>
+            <option value="small">小さく</option>
+            <option value="medium">標準</option>
+            <option value="large">大きく</option>
+            <option value="xx-large">極大</option>
+          </select>
+    
+        </div>
+    
+      </div>
+    </div>
   </div>
 
   <div id="buttonbar">

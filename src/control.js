@@ -41,10 +41,6 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   document.getElementById("url_text").value = "";
   document.getElementById("url_ok").addEventListener("click", (e) => {
     let url = document.getElementById("url_text").value;
-    let m = /(?:www\.youtube\.com\/watch\?v=|youtu\.be\/)(\w+)/.exec(url);
-    if(m){
-      url = `https://www.youtube.com/embed/${m[1]}`;
-    }
     let data = {
       "name": url,
       "type": "url",

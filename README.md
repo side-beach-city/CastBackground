@@ -44,10 +44,4 @@ Github Pagesか、独自Webサーバか好きな方でどうぞ。独自Webサ�
 
 ## さらなる活用方法
 
-### X-FrameOptionsヘッダが設定されたWebサイトを読み込む
-
-CastBackgroundは、URLを読み込む際、Webサイトをiframeで読み込みます。そのため、X-FrameOptionsヘッダでフレーム内での読み込みが制限されているサイトをCastBackgroundで読み込むことはできません(代表的なサイトでは、Googleサービスや一部ブログサービスによって提供されているサイトなどが該当します)。
-
-この場合、Chrome拡張でX-FrameOptionsヘッダを削除することで、読み込みが可能です。ブラウザのセキュリティリスクを上げてしまう場合もあるため、配信用に別のブラウザプロファイルを作成し、それを使用することをお勧めします。
-
-* [Ignore X\-Frame headers \- Chrome ウェブストア](https://chrome.google.com/webstore/detail/ignore-x-frame-headers/gleekbfjekiniecknbkamfmkohkpodhe)
+[Wikiページに全面的に移行しました]https://github.com/side-beach-city/CastBackground/wiki)ので、そちらをご確認ください。

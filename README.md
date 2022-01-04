@@ -44,4 +44,4 @@ Github Pagesか、独自Webサーバか好きな方でどうぞ。独自Webサ�
 
 ## さらなる活用方法
 
-[Wikiページに全面的に移行しました]https://github.com/side-beach-city/CastBackground/wiki)ので、そちらをご確認ください。
+[Wikiページに全面的に移行しました](https://github.com/side-beach-city/CastBackground/wiki)ので、そちらをご確認ください。

@@ -293,7 +293,7 @@ function loadQueue(e) {
   }
   queue.dataset.loaded = queue.value;
   //
-  let data = QueueListItem.LoadFromSelectbox(queue);
+  let data = activeData = QueueListItem.LoadFromSelectbox(queue);
   let wo = window.opener;
   Array.from(wo.document.getElementsByTagName("iframe")).forEach(e => e.style.display="none");
   Array.from(wo.document.querySelectorAll(".content")).forEach((e) => {
@@ -377,14 +377,14 @@ function loadQueue(e) {
     let media = window.opener.document.querySelector(".content");
     media.addEventListener("timeupdate", (e) => {
       if(media && media.duration && media.currentTime){
-        data.status = media.currentTime
+        activeData.status = media.currentTime;
         let time = Math.floor(media.duration - media.currentTime);
         let m = Math.floor(time / 60);
         let s = Math.floor((time - m * 60) % 60);
         const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
         document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
         document.getElementById('mediaseek').style.backgroundSize = percent + '%'
-        option.value = JSON.stringify(item);
+        activeData.update();
       }
     });
   }

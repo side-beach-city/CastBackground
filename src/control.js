@@ -325,6 +325,7 @@ function loadQueue(e) {
   set_zoomlevel(1.0, true);
   let clsn = data.type.split("/").shift();
   let cls = document.querySelector(`.${clsn}`);
+  // ステータスバーを拡張
   if(cls != null){
     cls.style.display = "inline";
     let controlbar = document.getElementById("controlbar");
@@ -336,6 +337,7 @@ function loadQueue(e) {
       })
     }
   }
+  // ビデオ・オーディオ時の更新処理追加
   if(/(video|audio)\/\w+/.test( data.type )){
     let media = window.opener.document.querySelector(".content");
     media.addEventListener("timeupdate", (e) => {

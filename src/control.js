@@ -11,11 +11,13 @@ class QueueListItem {
    * @param {String} name データの名称
    * @param {String} type データのタイプ。MIME/Typeまたは"url"
    * @param {String} url データを示すURL
+   * @param {Number} status ステータスを示す値
    */
-  constructor(name, type, url) { 
+  constructor(name, type, url, status = 0) { 
     this.name = name;
     this.type = type;
     this.url = url;  
+    this.status = status;
     this.optionItem = undefined;
   }
  
@@ -28,12 +30,23 @@ class QueueListItem {
   }
 
   /**
+   * optionItemで指定したHTMLOptionElement内に保存されているJSONデータを更新する
+   */
+  update(){
+    if(this.optionItem){
+      this.optionItem.value = this.JSONString;
+    }else{
+      throw "optionItemが未指定です。";
+    }
+  }
+
+  /**
     * JSONフォーマットの文字列よりオブジェクトを初期化する。
     * @param {String} json JSON形式の文字列
     */
   static LoadFromJSON(json){
     const data = JSON.parse(json);
-    return new QueueListItem(data.name, data.type, data.url);
+    return new QueueListItem(data.name, data.type, data.url, data.status);
   }
 
   /**
@@ -46,6 +59,8 @@ class QueueListItem {
     return data;
   }
 }
+
+let activeData;
 
 window.onload = (e) => {
   set_zoomlevel(1.0, true);
@@ -375,6 +390,9 @@ function loadQueue(e) {
   // ビデオ・オーディオ時の更新処理追加
   if(/(video|audio)\/\w+/.test( data.type )){
     let media = window.opener.document.querySelector(".content");
+    if(activeData.status > 0){
+      media.currentTime = activeData.status;
+    }
     media.addEventListener("timeupdate", (e) => {
       if(media && media.duration && media.currentTime){
         activeData.status = media.currentTime;

@@ -41,11 +41,7 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   document.getElementById("url_text").value = "";
   document.getElementById("url_ok").addEventListener("click", (e) => {
     let url = document.getElementById("url_text").value;
-    let data = {
-      "name": url,
-      "type": "url",
-      "url": url
-    }
+    let data = CreateListItem(url, "url", url);
     addQueueItem(data);
     dlg.close();
   });
@@ -228,11 +224,7 @@ function dragDropSupport(element) {
 
     let files = e.dataTransfer.files;
     Array.from(files).forEach(file => {
-      let data = {
-        "name": file.name,
-        "type": file.type,
-        "url": URL.createObjectURL(file)
-      }
+      let data = CreateListItem(file.name, file.type, URL.createObjectURL(file));
       if(file.type.startsWith("text")){
         reader = new FileReader();
         reader.addEventListener("load", () => {
@@ -382,5 +374,19 @@ function addQueueItem(item){
     return true;
   }else{
     return false;
+  }
+}
+
+/**
+ * リストアイテム用の構造体を作成する。
+ * @param {String} name データの名称
+ * @param {String} type データのタイプ。MIME/Typeまたは"url"
+ * @param {String} url データを示すURL
+ */
+ function CreateListItem(name, type, url) {
+  return {
+    "name": name,
+    "type": type,
+    "url": url,
   }
 }

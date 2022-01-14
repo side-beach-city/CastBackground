@@ -4,6 +4,49 @@ const SETTING_DEBUG = "debug";
 const APPNAME = "CastBackground";
 const APPVERSION = "1.4.0";
 window.x_debugmode = false;
+
+class QueueListItem {
+  /**
+   * リストアイテム用の構造体を作成する。
+   * @param {String} name データの名称
+   * @param {String} type データのタイプ。MIME/Typeまたは"url"
+   * @param {String} url データを示すURL
+   */
+  constructor(name, type, url) { 
+    this.name = name;
+    this.type = type;
+    this.url = url;  
+    this.optionItem = undefined;
+  }
+ 
+  /**
+    * オブジェクトのJSON表現を取得する。
+    * @returns {String} JSON表現
+    */
+  get JSONString() {
+    return JSON.stringify(this);
+  }
+
+  /**
+    * JSONフォーマットの文字列よりオブジェクトを初期化する。
+    * @param {String} json JSON形式の文字列
+    */
+  static LoadFromJSON(json){
+    const data = JSON.parse(json);
+    return new QueueListItem(data.name, data.type, data.url);
+  }
+
+  /**
+   * HTMLの<select>タグの内容よりオブジェクトを初期化する
+   * @param {HTMLSelectElement} selectObject <select>タグ
+   */
+  static LoadFromSelectbox(selectObject){
+    const data = QueueListItem.LoadFromJSON(selectObject.value)
+    data.optionItem = selectObject.selectedOptions[0];
+    return data;
+  }
+}
+
 window.onload = (e) => {
   set_zoomlevel(1.0, true);
   dragDropSupport(".droppable");
@@ -41,7 +84,7 @@ document.getElementById("addurl").addEventListener("click", (e) => {
   document.getElementById("url_text").value = "";
   document.getElementById("url_ok").addEventListener("click", (e) => {
     let url = document.getElementById("url_text").value;
-    let data = CreateListItem(url, "url", url);
+    let data = new QueueListItem(url, "url", url);
     addQueueItem(data);
     dlg.close();
   });
@@ -55,7 +98,7 @@ document.getElementById("controls").addEventListener("change", (e) => {
   let control_chk = document.getElementById("controls");
   let queue = document.getElementById("queue");
   if(queue.value != ""){
-    let data = JSON.parse(queue.value);
+    let data = QueueListItem.LoadFromSelectbox(queue);
     if(/(video|audio)\/\w+/.test( data.type )){
       let media = window.opener.document.querySelector(".content");
       media.controls = control_chk.checked;
@@ -170,7 +213,7 @@ function set_zoomlevel(zoom, update_seekbar) {
 let queue = document.getElementById("queue").addEventListener("change", (e) => {
   let queue = document.getElementById("queue");
   let rect = queue.selectedOptions[0].getBoundingClientRect();
-  let data = JSON.parse(queue.value);
+  let data = QueueListItem.LoadFromSelectbox(queue);
   let buttonbar = document.getElementById("buttonbar");
   buttonbar.style.display = "block";
   buttonbar.style.left = `${rect.right - buttonbar.getBoundingClientRect().width - 10}px`;
@@ -181,7 +224,7 @@ let queue = document.getElementById("queue").addEventListener("change", (e) => {
 
 document.getElementById("refreshitem").addEventListener("click", (e) => {
   let queue = document.getElementById("queue");
-  let data = JSON.parse(queue.value);
+  let data = QueueListItem.LoadFromSelectbox(queue);
   let id = window.btoa(data.url);
   let option = queue.selectedOptions[0];
   let iframe = window.opener.document.getElementById(id);
@@ -191,7 +234,7 @@ document.getElementById("refreshitem").addEventListener("click", (e) => {
 
 document.getElementById("removeitem").addEventListener("click", (e) => {
   let queue = document.getElementById("queue");
-  let data = JSON.parse(queue.value);
+  let data = QueueListItem.LoadFromSelectbox(queue);
   if(confirm(`項目${data.name}を削除します`)){
     queue.remove(queue.selectedIndex);
     if(data.type == "url"){
@@ -224,7 +267,7 @@ function dragDropSupport(element) {
 
     let files = e.dataTransfer.files;
     Array.from(files).forEach(file => {
-      let data = CreateListItem(file.name, file.type, URL.createObjectURL(file));
+      let data = new QueueListItem(file.name, file.type, URL.createObjectURL(file));
       if(file.type.startsWith("text")){
         reader = new FileReader();
         reader.addEventListener("load", () => {
@@ -250,7 +293,7 @@ function loadQueue(e) {
   }
   queue.dataset.loaded = queue.value;
   //
-  let data = JSON.parse(queue.value);
+  let data = QueueListItem.LoadFromSelectbox(queue);
   let wo = window.opener;
   Array.from(wo.document.getElementsByTagName("iframe")).forEach(e => e.style.display="none");
   Array.from(wo.document.querySelectorAll(".content")).forEach((e) => {
@@ -334,12 +377,14 @@ function loadQueue(e) {
     let media = window.opener.document.querySelector(".content");
     media.addEventListener("timeupdate", (e) => {
       if(media && media.duration && media.currentTime){
+        data.status = media.currentTime
         let time = Math.floor(media.duration - media.currentTime);
         let m = Math.floor(time / 60);
         let s = Math.floor((time - m * 60) % 60);
         const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
         document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
         document.getElementById('mediaseek').style.backgroundSize = percent + '%'
+        option.value = JSON.stringify(item);
       }
     });
   }
@@ -357,7 +402,7 @@ function addQueueItem(item){
   if(Array.from(queue.options).filter((e) => e.textContent == text).length == 0) {
     let option = document.createElement("option");
     option.text = `${item.type}:${item.name}`;
-    option.value = JSON.stringify(item);
+    option.value = item.JSONString;
     queue.appendChild(option);
     if(item.type === "url"){
       option.classList.add("loading")
@@ -374,19 +419,5 @@ function addQueueItem(item){
     return true;
   }else{
     return false;
-  }
-}
-
-/**
- * リストアイテム用の構造体を作成する。
- * @param {String} name データの名称
- * @param {String} type データのタイプ。MIME/Typeまたは"url"
- * @param {String} url データを示すURL
- */
- function CreateListItem(name, type, url) {
-  return {
-    "name": name,
-    "type": type,
-    "url": url,
   }
 }

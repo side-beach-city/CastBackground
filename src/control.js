@@ -2,7 +2,7 @@ const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
 const APPNAME = "CastBackground";
-const APPVERSION = "1.4.0";
+const APPVERSION = "1.5.0";
 window.x_debugmode = false;
 
 class QueueListItem {

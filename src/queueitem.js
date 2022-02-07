@@ -87,7 +87,7 @@ export function initButtonBars(){
       queue.remove(queue.selectedIndex);
       if(data.type == "url"){
         let frame = window.opener.document.getElementById(window.btoa(data.url));
-        window.opener.document.body.removeChild(frame);
+        window.opener.document.getElementById("display").removeChild(frame);
       }else{
         URL.revokeObjectURL(data.url);
       }

@@ -278,38 +278,40 @@ function loadQueue(e) {
   document.getElementById("mediatime").textContent = "0:00";
   document.getElementById("fontsize").value = "medium";
   set_zoomlevel(1.0, true);
-  let clsn = data.type.split("/").shift();
-  let cls = document.querySelector(`.${clsn}`);
-  // ステータスバーを拡張
-  if(cls != null){
-    cls.style.display = "inline";
-    let controlbar = document.getElementById("controlbar");
-    if(controlbar.offsetHeight < 80){
-      controlbar.style.height = `${controlbar.offsetHeight * 2}px`;
-      document.getElementById("typecontrols").style.display = "block";
-      Array.from(controlbar.querySelectorAll(".subcontrolbar")).forEach((e) => {
-        e.classList.add("multiline");
-      })
-    }
-  }
-  // ビデオ・オーディオ時の更新処理追加
-  if(/(video|audio)\/\w+/.test( data.type )){
-    let media = window.opener.document.querySelector(".content");
-    if(activeData.status > 0){
-      media.currentTime = activeData.status;
-    }
-    media.addEventListener("timeupdate", (e) => {
-      if(media && media.duration && media.currentTime){
-        activeData.status = media.currentTime;
-        let time = Math.floor(media.duration - media.currentTime);
-        let m = Math.floor(time / 60);
-        let s = Math.floor((time - m * 60) % 60);
-        const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
-        document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
-        document.getElementById('mediaseek').style.backgroundSize = percent + '%'
-        activeData.update();
+  if(data.type.includes("/")){
+    let clsn = data.type.split("/").shift();
+    let cls = document.querySelector(`.${clsn}`);
+    // ステータスバーを拡張
+    if(cls != null){
+      cls.style.display = "inline";
+      let controlbar = document.getElementById("controlbar");
+      if(controlbar.offsetHeight < 80){
+        controlbar.style.height = `${controlbar.offsetHeight * 2}px`;
+        document.getElementById("typecontrols").style.display = "block";
+        Array.from(controlbar.querySelectorAll(".subcontrolbar")).forEach((e) => {
+          e.classList.add("multiline");
+        })
       }
-    });
+    }
+    // ビデオ・オーディオ時の更新処理追加
+    if(data.isPlayable){
+      let media = window.opener.document.querySelector(".content");
+      if(activeData.status > 0){
+        media.currentTime = activeData.status;
+      }
+      media.addEventListener("timeupdate", (e) => {
+        if(media && media.duration && media.currentTime){
+          activeData.status = media.currentTime;
+          let time = Math.floor(media.duration - media.currentTime);
+          let m = Math.floor(time / 60);
+          let s = Math.floor((time - m * 60) % 60);
+          const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
+          document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
+          document.getElementById('mediaseek').style.backgroundSize = percent + '%'
+          activeData.update();
+        }
+      });
+    }
   }
   document.getElementById("zoomcontrol").style.display = "inline";
 }

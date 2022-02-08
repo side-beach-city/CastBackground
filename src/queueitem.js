@@ -23,6 +23,13 @@ export class QueueListItem {
   }
 
   /**
+   * 現在オブジェクトが参照しているデータが再生可能(videoまたはaudio)であればTrueを返却する。
+   * @returns {boolean} 再生可能データであればTrue
+   */
+  get isPlayable() {
+    return /(video|audio)\/\w+/.test( this.type );
+  }
+  /**
    * optionItemで指定したHTMLOptionElement内に保存されているJSONデータを更新する
    */
   update(){

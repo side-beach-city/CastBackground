@@ -61,7 +61,7 @@ document.getElementById("controls").addEventListener("change", (e) => {
   let queue = document.getElementById("queue");
   if(queue.value != ""){
     let data = QueueListItem.LoadFromSelectbox(queue);
-    if(/(video|audio)\/\w+/.test( data.type )){
+    if(data.isPlayable){
       let media = window.opener.document.querySelector(".content");
       media.controls = control_chk.checked;
     }

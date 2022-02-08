@@ -31,6 +31,10 @@ select#queue option.loading{
   border-color: blue !important;
 }
 
+select#queue option.playbg{
+  border-color: greenyellow !important;
+}
+
 /* #endregion */
 
 /* #region コントロールバー */

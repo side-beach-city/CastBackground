@@ -29,6 +29,15 @@ export class QueueListItem {
   get isPlayable() {
     return /(video|audio)\/\w+/.test( this.type );
   }
+
+  /**
+   * 現在オブジェクトが参照しているデータの種別を取得する
+   * @returns {String} データの大まかなタイプ(MIMEタイプの左側文字列)
+   */
+  get generalType() {
+    return this.type.includes("/") ? this.type.split("/")[0] : "";
+  }
+
   /**
    * optionItemで指定したHTMLOptionElement内に保存されているJSONデータを更新する
    */

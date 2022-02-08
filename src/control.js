@@ -278,8 +278,8 @@ function loadQueue(e) {
   document.getElementById("mediatime").textContent = "0:00";
   document.getElementById("fontsize").value = "medium";
   set_zoomlevel(1.0, true);
-  if(data.type.includes("/")){
-    let clsn = data.type.split("/").shift();
+  let clsn = data.generalType;
+  if(clsn != ""){
     let cls = document.querySelector(`.${clsn}`);
     // ステータスバーを拡張
     if(cls != null){

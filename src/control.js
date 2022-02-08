@@ -2,6 +2,7 @@ import { QueueListItem, initButtonBars } from "./queueitem.js";
 const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
+const SETTING_BGMPLAY = "bgm";
 const APPNAME = "CastBackground";
 const APPVERSION = "1.5.0";
 window.x_debugmode = false;
@@ -15,8 +16,10 @@ window.onload = (e) => {
   queue.addEventListener("dblclick", loadQueue);
   let control_chk = document.getElementById("controls");
   let autoplay_chk = document.getElementById("autoplay");
+  let playbgm_chk = document.getElementById("playbgm");
   control_chk.checked = localStorage.getItem(SETTING_CONTROLS) === "true";
   autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
+  playbgm_chk.checked = localStorage.getItem(SETTING_BGMPLAY) === "true";  
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
   document.getElementById("version").textContent = `${APPNAME} Version ${APPVERSION}.`;
@@ -29,6 +32,7 @@ window.onload = (e) => {
 window.onbeforeunload  = (e) => {
   localStorage.setItem(SETTING_CONTROLS, document.getElementById("controls").checked);
   localStorage.setItem(SETTING_AUTOPLAY, document.getElementById("autoplay").checked);
+  localStorage.setItem(SETTING_BGMPLAY, document.getElementById("playbgm").checked);
   if(!window.x_ownerunload){
     e.preventDefault();
     e.returnValue = "check";

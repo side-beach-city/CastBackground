@@ -177,8 +177,22 @@ function set_zoomlevel(zoom, update_seekbar) {
 //#region BackgroundManager処理
 
 document.addEventListener("BGChanged", (e) => {
-  if(e.detail["itemOld"]){e.detail["itemOld"].optionItem.classList.remove("playbg"); }
-  if(e.detail["itemNew"]){e.detail["itemNew"].optionItem.classList.add("playbg"); }
+  const BGMUSIC_ID = "bgmusic_elem";
+  if(e.detail["itemOld"]){
+    e.detail["itemOld"].optionItem.classList.remove("playbg");
+    if(e.detail["itemType"] == "music"){
+      window.opener.document.getElementById(BGMUSIC_ID).remove();
+    }
+  }
+  let itemNew = e.detail["itemNew"];
+  if(itemNew){
+    itemNew.optionItem.classList.add("playbg"); 
+    if(e.detail["itemType"] == "music"){
+      let autoplay = document.getElementById("autoplay").checked ? " autoplay" : "";
+      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" id="${BGMUSIC_ID}"${autoplay}>`;
+      window.opener.document.getElementById("background").innerHTML = bgobj;
+    }
+  }
 });
 
 //#endregion

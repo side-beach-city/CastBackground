@@ -33,6 +33,10 @@ body {
   border: 0;
 }
 
+#background{
+  display: none;
+}
+
 button#startup_button {
   padding: 6px 12px;
   margin: 18px;

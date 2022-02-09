@@ -174,6 +174,15 @@ function set_zoomlevel(zoom, update_seekbar) {
 
 //#endregion
 
+//#region BackgroundManager処理
+
+document.addEventListener("BGChanged", (e) => {
+  if(e.detail["itemOld"]){e.detail["itemOld"].optionItem.classList.remove("playbg"); }
+  if(e.detail["itemNew"]){e.detail["itemNew"].optionItem.classList.add("playbg"); }
+});
+
+//#endregion
+
 /**
  * ドラッグドロップへの対応処理
  * @param {string} element ドラッグドロップに対応させるエレメントを示す、セレクタ文字列

@@ -1,5 +1,11 @@
+const EVENT_NAME = "BGChanged";
 /**
  * BGM・背景画像管理オブジェクト
+ * このマネージャからの通知は、documentオブジェクトで発生するBGChangedイベントにより行われる。
+ * イベントオブジェクトの引数は以下の通り
+ * @param {String} itemType 画像であった場合"image", BGMであった場合"music"
+ * @param {QueueListItem} itemOld 差し替え前のオブジェクト
+ * @param {QueueListItem} itemNew 差し替え後のオブジェクト
  */
 class BackgroundManager{
   constructor(){
@@ -8,21 +14,17 @@ class BackgroundManager{
   }
 
   /**
-   * QueueListItem差し替え処理
-   * @param {QueueListItem} oOld 差し替え前のオブジェクト
-   * @param {QueueListItem} oNew 差し替え後のオブジェクト
-   */
-  updateObject(oOld, oNew){
-    if(oOld){oOld.optionItem.classList.remove("playbg"); }
-    if(oNew){oNew.optionItem.classList.add("playbg"); }
-  }
-
-  /**
    * 新しい背景画像を設定する
    * @param {QueueListItem} newData 新しい背景画像を示すQueueListItem
    */
   set image(newData){
-    this.updateObject(this._image, newData);
+    document.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      "detail": {
+        "itemType": "image",
+        "itemOld": this._image,
+        "itemNew": newData
+      }
+    }));
     this._image = newData;
   }
 
@@ -39,7 +41,13 @@ class BackgroundManager{
    * @param {QueueListItem} newData 新しいBGMを示すQueueListItem
    */
   set music(newData){
-    this.updateObject(this._music, newData);
+    document.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      "detail": {
+        "itemType": "music",
+        "itemOld": this._music,
+        "itemNew": newData
+      }
+    }));
     this._music = newData;
   }
 

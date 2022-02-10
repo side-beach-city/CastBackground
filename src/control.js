@@ -189,9 +189,10 @@ function dragDropSupport(element) {
     Array.from(files).forEach(file => {
       let data = new QueueListItem(file.name, file.type, URL.createObjectURL(file));
       if(file.type.startsWith("text")){
-        reader = new FileReader();
+        let reader = new FileReader();
         reader.addEventListener("load", () => {
-          addQueueItem({...data, ...{text: reader.result}})
+          data.status = reader.result;
+          addQueueItem(data);
         });
         reader.readAsText(file);
       }else{
@@ -248,13 +249,13 @@ function loadQueue(e) {
         html = `<audio src="${data.url}"${control}${autoplay} class="content">`;
         break;
       case data.type === "text/html":
-        html = `<div class="content">${data.text}</div>`;
+        html = `<div class="content">${data.status}</div>`;
         break;
       case data.type === "application/pdf":
         html = `<iframe class="content" src="${data.url}"></iframe>`;
         break;
       case /text\/\w+/.test( data.type ):
-        html = `<p class="content">${data.text}</p>`;
+        html = `<p class="content">${data.status}</p>`;
         break;
       case data.type === "":
         html = `<p class="content">Unknown MIME Type</p>`;

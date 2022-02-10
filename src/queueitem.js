@@ -4,7 +4,7 @@ export class QueueListItem {
    * @param {String} name データの名称
    * @param {String} type データのタイプ。MIME/Typeまたは"url"
    * @param {String} url データを示すURL
-   * @param {Number} status ステータスを示す値
+   * @param {Number|String} status ステータスを示す値
    */
   constructor(name, type, url, status = 0) { 
     this.name = name;

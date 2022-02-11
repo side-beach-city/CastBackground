@@ -3,6 +3,7 @@ const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
 const SETTING_BGMPLAY = "bgm";
+const SETTING_BGMVOL = "bgmvolume";
 const BGMUSIC_ID = "bgmusic_elem";
 const APPNAME = "CastBackground";
 const APPVERSION = "1.5.0";
@@ -18,9 +19,11 @@ window.onload = (e) => {
   let control_chk = document.getElementById("controls");
   let autoplay_chk = document.getElementById("autoplay");
   let playbgm_chk = document.getElementById("playbgm");
+  let playvolume = document.getElementById("bgmvolume");
   control_chk.checked = localStorage.getItem(SETTING_CONTROLS) === "true";
   autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
   playbgm_chk.checked = localStorage.getItem(SETTING_BGMPLAY) === "true";  
+  playvolume.value = localStorage.getItem(SETTING_BGMVOL) ? localStorage.getItem(SETTING_BGMVOL) : 1.0;
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
   document.getElementById("version").textContent = `${APPNAME} Version ${APPVERSION}.`;
@@ -34,6 +37,7 @@ window.onbeforeunload  = (e) => {
   localStorage.setItem(SETTING_CONTROLS, document.getElementById("controls").checked);
   localStorage.setItem(SETTING_AUTOPLAY, document.getElementById("autoplay").checked);
   localStorage.setItem(SETTING_BGMPLAY, document.getElementById("playbgm").checked);
+  localStorage.setItem(SETTING_BGMVOL, document.getElementById("bgmvolume").value);
   if(!window.x_ownerunload){
     e.preventDefault();
     e.returnValue = "check";
@@ -82,6 +86,13 @@ document.getElementById("playbgm").addEventListener("click", (e) => {
     }else{
       bgm.pause();
     }
+  }
+});
+
+document.getElementById("bgmvolume").addEventListener("input", (e) => {
+  let bgm;
+  if(bgm = window.opener.document.getElementById(BGMUSIC_ID)){
+    bgm.volume = document.getElementById("bgmvolume").value;
   }
 });
 //#endregion
@@ -200,7 +211,8 @@ document.addEventListener("BGChanged", (e) => {
     itemNew.optionItem.classList.add("playbg"); 
     if(e.detail["itemType"] == "music"){
       let autoplay = document.getElementById("playbgm").checked ? " autoplay" : "";
-      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" id="${BGMUSIC_ID}"${autoplay}>`;
+      let volume = document.getElementById("bgmvolume").value;
+      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" volume="${volume}" id="${BGMUSIC_ID}"${autoplay}>`;
       window.opener.document.getElementById("background").innerHTML = bgobj;
     }
   }

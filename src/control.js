@@ -3,6 +3,7 @@ const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
 const SETTING_BGMPLAY = "bgm";
+const BGMUSIC_ID = "bgmusic_elem";
 const APPNAME = "CastBackground";
 const APPVERSION = "1.5.0";
 window.x_debugmode = false;
@@ -72,6 +73,17 @@ document.getElementById("controls").addEventListener("change", (e) => {
   }
 });
 
+document.getElementById("playbgm").addEventListener("click", (e) => {
+  let bgm;
+  if(bgm = window.opener.document.getElementById(BGMUSIC_ID)){
+    if(document.getElementById("playbgm").checked){
+      bgm.currentTime = 0;
+      bgm.play();
+    }else{
+      bgm.pause();
+    }
+  }
+});
 //#endregion
 
 //#region Audio、Videoコントロールバー処理
@@ -177,7 +189,6 @@ function set_zoomlevel(zoom, update_seekbar) {
 //#region BackgroundManager処理
 
 document.addEventListener("BGChanged", (e) => {
-  const BGMUSIC_ID = "bgmusic_elem";
   if(e.detail["itemOld"]){
     e.detail["itemOld"].optionItem.classList.remove("playbg");
     if(e.detail["itemType"] == "music"){
@@ -188,7 +199,7 @@ document.addEventListener("BGChanged", (e) => {
   if(itemNew){
     itemNew.optionItem.classList.add("playbg"); 
     if(e.detail["itemType"] == "music"){
-      let autoplay = document.getElementById("autoplay").checked ? " autoplay" : "";
+      let autoplay = document.getElementById("playbgm").checked ? " autoplay" : "";
       let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" id="${BGMUSIC_ID}"${autoplay}>`;
       window.opener.document.getElementById("background").innerHTML = bgobj;
     }

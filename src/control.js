@@ -189,7 +189,7 @@ document.addEventListener("BGChanged", (e) => {
     itemNew.optionItem.classList.add("playbg"); 
     if(e.detail["itemType"] == "music"){
       let autoplay = document.getElementById("autoplay").checked ? " autoplay" : "";
-      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" id="${BGMUSIC_ID}"${autoplay}>`;
+      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" id="${BGMUSIC_ID}"${autoplay}>`;
       window.opener.document.getElementById("background").innerHTML = bgobj;
     }
   }

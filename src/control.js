@@ -211,9 +211,9 @@ document.addEventListener("BGChanged", (e) => {
     itemNew.optionItem.classList.add("playbg"); 
     if(e.detail["itemType"] == "music"){
       let autoplay = document.getElementById("playbgm").checked ? " autoplay" : "";
-      let volume = document.getElementById("bgmvolume").value;
-      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" volume="${volume}" id="${BGMUSIC_ID}"${autoplay}>`;
+      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" id="${BGMUSIC_ID}"${autoplay}>`;
       window.opener.document.getElementById("background").innerHTML = bgobj;
+      window.opener.document.getElementById(BGMUSIC_ID).volume = document.getElementById("bgmvolume").value;
     }
   }
 });

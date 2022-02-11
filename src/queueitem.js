@@ -86,6 +86,8 @@ export function initButtonBars(){
     buttonbar.style.top = `${rect.y}px`;
     let refreshitem = document.getElementById("refreshitem");
     refreshitem.disabled = data.type != "url";
+    let setbackground = document.getElementById("setbackground");
+    setbackground.disabled = !(/(video|audio|image)\/\w+/.test( data.type ));
   });
   
   document.getElementById("setbackground").addEventListener("click", (e) => {

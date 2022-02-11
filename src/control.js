@@ -2,6 +2,9 @@ import { QueueListItem, initButtonBars } from "./queueitem.js";
 const SETTING_AUTOPLAY = "autoplay";
 const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
+const SETTING_BGMPLAY = "bgm";
+const SETTING_BGMVOL = "bgmvolume";
+const BGMUSIC_ID = "bgmusic_elem";
 const APPNAME = "CastBackground";
 const APPVERSION = "1.5.0";
 window.x_debugmode = false;
@@ -15,8 +18,12 @@ window.onload = (e) => {
   queue.addEventListener("dblclick", loadQueue);
   let control_chk = document.getElementById("controls");
   let autoplay_chk = document.getElementById("autoplay");
+  let playbgm_chk = document.getElementById("playbgm");
+  let playvolume = document.getElementById("bgmvolume");
   control_chk.checked = localStorage.getItem(SETTING_CONTROLS) === "true";
   autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
+  playbgm_chk.checked = localStorage.getItem(SETTING_BGMPLAY) === "true";  
+  playvolume.value = localStorage.getItem(SETTING_BGMVOL) ? localStorage.getItem(SETTING_BGMVOL) : 1.0;
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
   document.getElementById("version").textContent = `${APPNAME} Version ${APPVERSION}.`;
@@ -29,6 +36,8 @@ window.onload = (e) => {
 window.onbeforeunload  = (e) => {
   localStorage.setItem(SETTING_CONTROLS, document.getElementById("controls").checked);
   localStorage.setItem(SETTING_AUTOPLAY, document.getElementById("autoplay").checked);
+  localStorage.setItem(SETTING_BGMPLAY, document.getElementById("playbgm").checked);
+  localStorage.setItem(SETTING_BGMVOL, document.getElementById("bgmvolume").value);
   if(!window.x_ownerunload){
     e.preventDefault();
     e.returnValue = "check";
@@ -61,13 +70,31 @@ document.getElementById("controls").addEventListener("change", (e) => {
   let queue = document.getElementById("queue");
   if(queue.value != ""){
     let data = QueueListItem.LoadFromSelectbox(queue);
-    if(/(video|audio)\/\w+/.test( data.type )){
+    if(data.isPlayable){
       let media = window.opener.document.querySelector(".content");
       media.controls = control_chk.checked;
     }
   }
 });
 
+document.getElementById("playbgm").addEventListener("click", (e) => {
+  let bgm;
+  if(bgm = window.opener.document.getElementById(BGMUSIC_ID)){
+    if(document.getElementById("playbgm").checked){
+      bgm.currentTime = 0;
+      bgm.play();
+    }else{
+      bgm.pause();
+    }
+  }
+});
+
+document.getElementById("bgmvolume").addEventListener("input", (e) => {
+  let bgm;
+  if(bgm = window.opener.document.getElementById(BGMUSIC_ID)){
+    bgm.volume = document.getElementById("bgmvolume").value;
+  }
+});
 //#endregion
 
 //#region Audio、Videoコントロールバー処理
@@ -167,6 +194,29 @@ function set_zoomlevel(zoom, update_seekbar) {
   window.opener.document.getElementById("display").style.overflow = zoom > 1.0 ? "scroll" : "hidden";
   
 }
+
+//#endregion
+
+//#region BackgroundManager処理
+
+document.addEventListener("BGChanged", (e) => {
+  if(e.detail["itemOld"]){
+    e.detail["itemOld"].optionItem.classList.remove("playbg");
+    if(e.detail["itemType"] == "music"){
+      window.opener.document.getElementById(BGMUSIC_ID).remove();
+    }
+  }
+  let itemNew = e.detail["itemNew"];
+  if(itemNew){
+    itemNew.optionItem.classList.add("playbg"); 
+    if(e.detail["itemType"] == "music"){
+      let autoplay = document.getElementById("playbgm").checked ? " autoplay" : "";
+      let volume = document.getElementById("bgmvolume").value;
+      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" volume="${volume}" id="${BGMUSIC_ID}"${autoplay}>`;
+      window.opener.document.getElementById("background").innerHTML = bgobj;
+    }
+  }
+});
 
 //#endregion
 
@@ -279,38 +329,40 @@ function loadQueue(e) {
   document.getElementById("mediatime").textContent = "0:00";
   document.getElementById("fontsize").value = "medium";
   set_zoomlevel(1.0, true);
-  let clsn = data.type.split("/").shift();
-  let cls = document.querySelector(`.${clsn}`);
-  // ステータスバーを拡張
-  if(cls != null){
-    cls.style.display = "inline";
-    let controlbar = document.getElementById("controlbar");
-    if(controlbar.offsetHeight < 80){
-      controlbar.style.height = `${controlbar.offsetHeight * 2}px`;
-      document.getElementById("typecontrols").style.display = "block";
-      Array.from(controlbar.querySelectorAll(".subcontrolbar")).forEach((e) => {
-        e.classList.add("multiline");
-      })
-    }
-  }
-  // ビデオ・オーディオ時の更新処理追加
-  if(/(video|audio)\/\w+/.test( data.type )){
-    let media = window.opener.document.querySelector(".content");
-    if(activeData.status > 0){
-      media.currentTime = activeData.status;
-    }
-    media.addEventListener("timeupdate", (e) => {
-      if(media && media.duration && media.currentTime){
-        activeData.status = media.currentTime;
-        let time = Math.floor(media.duration - media.currentTime);
-        let m = Math.floor(time / 60);
-        let s = Math.floor((time - m * 60) % 60);
-        const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
-        document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
-        document.getElementById('mediaseek').style.backgroundSize = percent + '%'
-        activeData.update();
+  let clsn = data.generalType;
+  if(clsn != ""){
+    let cls = document.querySelector(`.${clsn}`);
+    // ステータスバーを拡張
+    if(cls != null){
+      cls.style.display = "inline";
+      let controlbar = document.getElementById("controlbar");
+      if(controlbar.offsetHeight < 80){
+        controlbar.style.height = `${controlbar.offsetHeight * 2}px`;
+        document.getElementById("typecontrols").style.display = "block";
+        Array.from(controlbar.querySelectorAll(".subcontrolbar")).forEach((e) => {
+          e.classList.add("multiline");
+        })
       }
-    });
+    }
+    // ビデオ・オーディオ時の更新処理追加
+    if(data.isPlayable){
+      let media = window.opener.document.querySelector(".content");
+      if(activeData.status > 0){
+        media.currentTime = activeData.status;
+      }
+      media.addEventListener("timeupdate", (e) => {
+        if(media && media.duration && media.currentTime){
+          activeData.status = media.currentTime;
+          let time = Math.floor(media.duration - media.currentTime);
+          let m = Math.floor(time / 60);
+          let s = Math.floor((time - m * 60) % 60);
+          const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
+          document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
+          document.getElementById('mediaseek').style.backgroundSize = percent + '%'
+          activeData.update();
+        }
+      });
+    }
   }
   document.getElementById("zoomcontrol").style.display = "inline";
 }

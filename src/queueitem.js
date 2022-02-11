@@ -1,3 +1,5 @@
+import BackgroundManager from "./backgroundmanager.js";
+
 export class QueueListItem {
   /**
    * リストアイテム用の構造体を作成する。
@@ -20,6 +22,22 @@ export class QueueListItem {
     */
   get JSONString() {
     return JSON.stringify(this);
+  }
+
+  /**
+   * 現在オブジェクトが参照しているデータが再生可能(videoまたはaudio)であればTrueを返却する。
+   * @returns {boolean} 再生可能データであればTrue
+   */
+  get isPlayable() {
+    return /(video|audio)\/\w+/.test( this.type );
+  }
+
+  /**
+   * 現在オブジェクトが参照しているデータの種別を取得する
+   * @returns {String} データの大まかなタイプ(MIMEタイプの左側文字列)
+   */
+  get generalType() {
+    return this.type.includes("/") ? this.type.split("/")[0] : "";
   }
 
   /**
@@ -70,6 +88,18 @@ export function initButtonBars(){
     refreshitem.disabled = data.type != "url";
   });
   
+  document.getElementById("setbackground").addEventListener("click", (e) => {
+    let queue = document.getElementById("queue");
+    let data = QueueListItem.LoadFromSelectbox(queue);
+    if (data.isPlayable) {
+      // BGM
+      BackgroundManager.music = data;
+    } else if(data.generalType == "image") {
+      // BGImage
+      BackgroundManager.image = data;
+    }
+  });
+  
   document.getElementById("refreshitem").addEventListener("click", (e) => {
     let queue = document.getElementById("queue");
     let data = QueueListItem.LoadFromSelectbox(queue);
@@ -85,6 +115,8 @@ export function initButtonBars(){
     let data = QueueListItem.LoadFromSelectbox(queue);
     if(confirm(`項目${data.name}を削除します`)){
       queue.remove(queue.selectedIndex);
+      if(BackgroundManager.music == data){ BackgroundManager.music = null; }
+      if(BackgroundManager.image == data){ BackgroundManager.image = null; }
       if(data.type == "url"){
         let frame = window.opener.document.getElementById(window.btoa(data.url));
         window.opener.document.getElementById("display").removeChild(frame);

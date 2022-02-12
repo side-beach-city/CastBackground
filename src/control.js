@@ -95,6 +95,11 @@ document.getElementById("bgmvolume").addEventListener("input", (e) => {
     bgm.volume = document.getElementById("bgmvolume").value;
   }
 });
+
+document.getElementById("custom-css").addEventListener("change", (e) => {
+  window.opener.document.getElementById("custom-css").textContent = document.getElementById("custom-css").value;
+});
+
 //#endregion
 
 //#region Audio、Videoコントロールバー処理

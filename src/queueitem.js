@@ -117,8 +117,8 @@ export function initButtonBars(){
     let data = QueueListItem.LoadFromSelectbox(queue);
     if(confirm(`項目${data.name}を削除します`)){
       queue.remove(queue.selectedIndex);
-      if(BackgroundManager.music == data){ BackgroundManager.music = null; }
-      if(BackgroundManager.image == data){ BackgroundManager.image = null; }
+      if(BackgroundManager.music && BackgroundManager.music.url == data.url){ BackgroundManager.music = null; }
+      if(BackgroundManager.image && BackgroundManager.image.url == data.url){ BackgroundManager.image = null; }
       if(data.type == "url"){
         let frame = window.opener.document.getElementById(window.btoa(data.url));
         window.opener.document.getElementById("display").removeChild(frame);

@@ -202,18 +202,32 @@ function set_zoomlevel(zoom, update_seekbar) {
 document.addEventListener("BGChanged", (e) => {
   if(e.detail["itemOld"]){
     e.detail["itemOld"].optionItem.classList.remove("playbg");
-    if(e.detail["itemType"] == "music"){
-      window.opener.document.getElementById(BGMUSIC_ID).remove();
+    switch (e.detail["itemType"]) {
+      case "music":
+        window.opener.document.getElementById(BGMUSIC_ID).remove();
+        break;
+      case "image":
+        window.opener.document.getElementById("background").style.backgroundImage = "";
+        break;
+      default:
+        throw "Unknown Item Type";
     }
   }
   let itemNew = e.detail["itemNew"];
   if(itemNew){
     itemNew.optionItem.classList.add("playbg"); 
-    if(e.detail["itemType"] == "music"){
-      let autoplay = document.getElementById("playbgm").checked ? " autoplay" : "";
-      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" id="${BGMUSIC_ID}"${autoplay}>`;
-      window.opener.document.getElementById("background").innerHTML = bgobj;
-      window.opener.document.getElementById(BGMUSIC_ID).volume = document.getElementById("bgmvolume").value;
+    switch (e.detail["itemType"]){
+      case "music":
+        let autoplay = document.getElementById("playbgm").checked ? " autoplay" : "";
+        let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" id="${BGMUSIC_ID}"${autoplay}>`;
+        window.opener.document.getElementById("background").innerHTML = bgobj;
+        window.opener.document.getElementById(BGMUSIC_ID).volume = document.getElementById("bgmvolume").value;
+        break;
+      case "image":
+        window.opener.document.getElementById("background").style.backgroundImage = `url(${itemNew.url})`;
+        break;
+      default:
+        throw "Unknown Item Type"
     }
   }
 });

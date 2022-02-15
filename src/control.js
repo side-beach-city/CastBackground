@@ -4,6 +4,7 @@ const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
 const SETTING_BGMPLAY = "bgm";
 const SETTING_BGMVOL = "bgmvolume";
+const SETTING_CUSTOMCSS = "customcss";
 const BGMUSIC_ID = "bgmusic_elem";
 const APPNAME = "CastBackground";
 const APPVERSION = "1.5.0";
@@ -20,10 +21,12 @@ window.onload = (e) => {
   let autoplay_chk = document.getElementById("autoplay");
   let playbgm_chk = document.getElementById("playbgm");
   let playvolume = document.getElementById("bgmvolume");
+  let customcss = document.getElementById("custom-css");
   control_chk.checked = localStorage.getItem(SETTING_CONTROLS) === "true";
   autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
   playbgm_chk.checked = localStorage.getItem(SETTING_BGMPLAY) === "true";  
   playvolume.value = localStorage.getItem(SETTING_BGMVOL) ? localStorage.getItem(SETTING_BGMVOL) : 1.0;
+  window.opener.document.getElementById("custom-css").textContent = customcss.value = localStorage.getItem(SETTING_CUSTOMCSS);
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
   document.getElementById("version").textContent = `${APPNAME} Version ${APPVERSION}.`;
@@ -38,6 +41,7 @@ window.onbeforeunload  = (e) => {
   localStorage.setItem(SETTING_AUTOPLAY, document.getElementById("autoplay").checked);
   localStorage.setItem(SETTING_BGMPLAY, document.getElementById("playbgm").checked);
   localStorage.setItem(SETTING_BGMVOL, document.getElementById("bgmvolume").value);
+  localStorage.setItem(SETTING_CUSTOMCSS, document.getElementById("custom-css").value);
   if(!window.x_ownerunload){
     e.preventDefault();
     e.returnValue = "check";
@@ -96,7 +100,7 @@ document.getElementById("bgmvolume").addEventListener("input", (e) => {
   }
 });
 
-document.getElementById("custom-css").addEventListener("change", (e) => {
+document.getElementById("custom-css").addEventListener("input", (e) => {
   window.opener.document.getElementById("custom-css").textContent = document.getElementById("custom-css").value;
 });
 

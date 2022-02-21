@@ -81,6 +81,12 @@ select#queue option.playbg{
   display: none;
 }
 
+#controlbar p#showcustomcss {
+  min-height: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
 #controlbar #version{
   margin:0;
 }
@@ -128,6 +134,10 @@ dialog p {
 
 input#url_text {
   margin: 8px 0;
+}
+
+dialog textarea{
+  height: 7em !important;
 }
 
 /* #endregion */

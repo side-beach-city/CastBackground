@@ -4,6 +4,7 @@ const SETTING_CONTROLS = "controls";
 const SETTING_DEBUG = "debug";
 const SETTING_BGMPLAY = "bgm";
 const SETTING_BGMVOL = "bgmvolume";
+const SETTING_CUSTOMCSS = "customcss";
 const BGMUSIC_ID = "bgmusic_elem";
 const APPNAME = "CastBackground";
 const APPVERSION = "1.5.0";
@@ -20,10 +21,12 @@ window.onload = (e) => {
   let autoplay_chk = document.getElementById("autoplay");
   let playbgm_chk = document.getElementById("playbgm");
   let playvolume = document.getElementById("bgmvolume");
+  let customcss = document.getElementById("custom-css");
   control_chk.checked = localStorage.getItem(SETTING_CONTROLS) === "true";
   autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
   playbgm_chk.checked = localStorage.getItem(SETTING_BGMPLAY) === "true";  
   playvolume.value = localStorage.getItem(SETTING_BGMVOL) ? localStorage.getItem(SETTING_BGMVOL) : 1.0;
+  window.opener.document.getElementById("custom-css").textContent = customcss.value = localStorage.getItem(SETTING_CUSTOMCSS);
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
   document.getElementById("version").textContent = `${APPNAME} Version ${APPVERSION}.`;
@@ -38,6 +41,7 @@ window.onbeforeunload  = (e) => {
   localStorage.setItem(SETTING_AUTOPLAY, document.getElementById("autoplay").checked);
   localStorage.setItem(SETTING_BGMPLAY, document.getElementById("playbgm").checked);
   localStorage.setItem(SETTING_BGMVOL, document.getElementById("bgmvolume").value);
+  localStorage.setItem(SETTING_CUSTOMCSS, document.getElementById("custom-css").value);
   if(!window.x_ownerunload){
     e.preventDefault();
     e.returnValue = "check";
@@ -95,6 +99,24 @@ document.getElementById("bgmvolume").addEventListener("input", (e) => {
     bgm.volume = document.getElementById("bgmvolume").value;
   }
 });
+
+document.getElementById("showcustomcss").addEventListener("click", (e) => {
+  let dlg = document.getElementById("customcss");
+  let css = document.getElementById("custom-css").value;
+  document.getElementById("css_ok").addEventListener("click", (e) => {
+    dlg.close();
+  });
+  document.getElementById("css_cancel").addEventListener("click", (e) => {
+    window.opener.document.getElementById("custom-css").textContent = document.getElementById("custom-css").value = css;
+    dlg.close();
+  });
+  dlg.showModal();
+});
+
+document.getElementById("custom-css").addEventListener("input", (e) => {
+  window.opener.document.getElementById("custom-css").textContent = document.getElementById("custom-css").value;
+});
+
 //#endregion
 
 //#region Audio、Videoコントロールバー処理
@@ -202,18 +224,32 @@ function set_zoomlevel(zoom, update_seekbar) {
 document.addEventListener("BGChanged", (e) => {
   if(e.detail["itemOld"]){
     e.detail["itemOld"].optionItem.classList.remove("playbg");
-    if(e.detail["itemType"] == "music"){
-      window.opener.document.getElementById(BGMUSIC_ID).remove();
+    switch (e.detail["itemType"]) {
+      case "music":
+        window.opener.document.getElementById(BGMUSIC_ID).remove();
+        break;
+      case "image":
+        window.opener.document.getElementById("background").style.backgroundImage = "";
+        break;
+      default:
+        throw "Unknown Item Type";
     }
   }
   let itemNew = e.detail["itemNew"];
   if(itemNew){
     itemNew.optionItem.classList.add("playbg"); 
-    if(e.detail["itemType"] == "music"){
-      let autoplay = document.getElementById("playbgm").checked ? " autoplay" : "";
-      let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" id="${BGMUSIC_ID}"${autoplay}>`;
-      window.opener.document.getElementById("background").innerHTML = bgobj;
-      window.opener.document.getElementById(BGMUSIC_ID).volume = document.getElementById("bgmvolume").value;
+    switch (e.detail["itemType"]){
+      case "music":
+        let autoplay = document.getElementById("playbgm").checked ? " autoplay" : "";
+        let bgobj = `<${itemNew.generalType} src="${itemNew.url}" loop="true" id="${BGMUSIC_ID}"${autoplay}>`;
+        window.opener.document.getElementById("background").innerHTML = bgobj;
+        window.opener.document.getElementById(BGMUSIC_ID).volume = document.getElementById("bgmvolume").value;
+        break;
+      case "image":
+        window.opener.document.getElementById("background").style.backgroundImage = `url(${itemNew.url})`;
+        break;
+      default:
+        throw "Unknown Item Type"
     }
   }
 });

@@ -71,8 +71,7 @@
 
             <div class="dropdown-item">
               <div title="カスタムCSS">
-                <label class="form-label" for="custom-css">カスタムCSS</label>                
-                <textarea id="custom-css" class="form-control"></textarea>
+                <p class="custom-control custom-switch" id="showcustomcss">カスタムCSS</p>
               </div>
             </div>
 
@@ -148,6 +147,15 @@
     <div class="modal-footer">
       <button type="submit" id="url_ok"class="btn btn-primary">OK</button>
       <button id="url_cancel" class="btn btn-secondary">キャンセル</button>
+    </div>
+  </dialog>
+  <dialog id="customcss" class="modal-content">
+    <div class="modal-body">
+      <textarea id="custom-css" class="form-control"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" id="css_ok"class="btn btn-primary">OK</button>
+      <button id="css_cancel" class="btn btn-secondary">キャンセル</button>
     </div>
   </dialog>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -100,6 +100,19 @@ document.getElementById("bgmvolume").addEventListener("input", (e) => {
   }
 });
 
+document.getElementById("showcustomcss").addEventListener("click", (e) => {
+  let dlg = document.getElementById("customcss");
+  let css = document.getElementById("custom-css").value;
+  document.getElementById("css_ok").addEventListener("click", (e) => {
+    dlg.close();
+  });
+  document.getElementById("css_cancel").addEventListener("click", (e) => {
+    window.opener.document.getElementById("custom-css").textContent = document.getElementById("custom-css").value = css;
+    dlg.close();
+  });
+  dlg.showModal();
+});
+
 document.getElementById("custom-css").addEventListener("input", (e) => {
   window.opener.document.getElementById("custom-css").textContent = document.getElementById("custom-css").value;
 });

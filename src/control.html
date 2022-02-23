@@ -106,6 +106,14 @@
             </button>
           </div>
     
+          <div class="dropdown dropup" id="video_volume_parent">
+            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">🔊</button>
+            <div class="dropdown-menu" x-placement="top-start">
+              <label for="video_volume" id="video_volume_value">0.00</label>
+              <input type="range" min="0.0" max="1.0" step="0.01" id="video_volume" class="form-control-range">
+            </div>
+          </div>
+
           <div id="mediainfo">
             <div id="mediatime"></div>
             <div id="mediaseek"></div>

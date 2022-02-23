@@ -149,6 +149,12 @@ document.getElementById("ff10").addEventListener("click", (e) => {
   element.currentTime = Math.min(element.currentTime + 10, element.duration);
 });
 
+document.getElementById("video_volume").addEventListener("input", (e) => {
+  let element = window.opener.document.querySelector(".content");
+  let v = element.volume = document.getElementById("video_volume").value;
+  document.getElementById("video_volume_value").textContent = v;
+});
+
 document.getElementById('mediaseek').addEventListener("click", (e) => {
   let media = window.opener.document.querySelector(".content");
   const duration = Math.round(media.duration)
@@ -364,6 +370,8 @@ function loadQueue(e) {
   });
   document.getElementById("mediatime").textContent = "0:00";
   document.getElementById("fontsize").value = "medium";
+  document.getElementById("video_volume").value = 1;
+  document.getElementById("video_volume_value").textContent = document.getElementById("video_volume").value;
   set_zoomlevel(1.0, true);
   let clsn = data.generalType;
   if(clsn != ""){

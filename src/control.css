@@ -91,6 +91,10 @@ select#queue option.playbg{
   margin:0;
 }
 
+#controlbar #video_volume_parent{
+  display: inline;
+}
+
 #controlbar #typecontrols #mediainfo{
   display: inline-block;
   margin-left: 10px;

@@ -151,7 +151,8 @@ document.getElementById("ff10").addEventListener("click", (e) => {
 
 document.getElementById("video_volume").addEventListener("input", (e) => {
   let element = window.opener.document.querySelector(".content");
-  element.volume = document.getElementById("video_volume").value;
+  let v = element.volume = document.getElementById("video_volume").value;
+  document.getElementById("video_volume_value").textContent = v;
 });
 
 document.getElementById('mediaseek').addEventListener("click", (e) => {
@@ -370,6 +371,7 @@ function loadQueue(e) {
   document.getElementById("mediatime").textContent = "0:00";
   document.getElementById("fontsize").value = "medium";
   document.getElementById("video_volume").value = 1;
+  document.getElementById("video_volume_value").textContent = document.getElementById("video_volume").value;
   set_zoomlevel(1.0, true);
   let clsn = data.generalType;
   if(clsn != ""){

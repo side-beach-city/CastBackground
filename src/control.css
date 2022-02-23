@@ -95,6 +95,21 @@ select#queue option.playbg{
   display: inline;
 }
 
+#controlbar #video_volume_parent .dropdown-menu {
+  padding: .5rem;
+}
+
+#controlbar input#video_volume {
+  display: inline-block;
+  width: calc(100% - 6ex);
+  vertical-align: text-top;
+}
+
+#controlbar label#video_volume_value {
+  width: 4ex;
+  margin-bottom: 0;
+}
+
 #controlbar #typecontrols #mediainfo{
   display: inline-block;
   margin-left: 10px;

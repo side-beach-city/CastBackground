@@ -95,10 +95,10 @@ export function initButtonBars(){
     let data = QueueListItem.LoadFromSelectbox(queue);
     if (data.isPlayable) {
       // BGM
-      BackgroundManager.music = data;
+      BackgroundManager.music = (BackgroundManager.music && data.url == BackgroundManager.music.url) ? null : data;
     } else if(data.generalType == "image") {
       // BGImage
-      BackgroundManager.image = data;
+      BackgroundManager.image = (BackgroundManager.image && data.url == BackgroundManager.image.url) ? null : data;
     }
   });
   

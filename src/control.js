@@ -335,10 +335,10 @@ function loadQueue(e) {
         html = `<img src="${data.url}" class="content">`;
         break;
       case /video\/\w+/.test( data.type ):
-        html = `<video src="${data.url}"${control}${autoplay} class="content">`;
+        html = `<video src="${data.url}"${control}${autoplay} data-name="${data.name}" class="content">`;
         break;
       case /audio\/\w+/.test( data.type ):
-        html = `<audio src="${data.url}"${control}${autoplay} class="content">`;
+        html = `<audio src="${data.url}"${control}${autoplay} data-name="${data.name}" class="content">`;
         break;
       case data.type === "text/html":
         html = `<div class="content">${data.status}</div>`;
@@ -396,14 +396,20 @@ function loadQueue(e) {
       }
       media.addEventListener("timeupdate", (e) => {
         if(media && media.duration && media.currentTime){
-          activeData.status = media.currentTime;
-          let time = Math.floor(media.duration - media.currentTime);
-          let m = Math.floor(time / 60);
-          let s = Math.floor((time - m * 60) % 60);
-          const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
-          document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
-          document.getElementById('mediaseek').style.backgroundSize = percent + '%'
-          activeData.update();
+          let queue = document.getElementById("queue");
+          let index = Array.from(queue.options).findIndex(e => JSON.parse(e.value).name == media.dataset.name);
+          if(index != -1){
+            let data = QueueListItem.LoadFromJSON(queue[index].value);
+            data.optionItem = queue[index];
+            data.status = media.currentTime;
+            let time = Math.floor(media.duration - media.currentTime);
+            let m = Math.floor(time / 60);
+            let s = Math.floor((time - m * 60) % 60);
+            const percent = Math.round((media.currentTime / media.duration) * 1000) / 10;
+            document.getElementById("mediatime").textContent = `${m}:${("00" + s).slice(-2)}`;
+            document.getElementById('mediaseek').style.backgroundSize = percent + '%'
+            data.update();
+          }
         }
       });
     }

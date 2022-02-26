@@ -147,12 +147,20 @@ select#queue option.playbg{
 
 /* #region ダイアログ */
 
+dialog {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 100%;
+}
+
 dialog p {
   margin: 0;
 }
 
 input#url_text {
   margin: 8px 0;
+  width: 100%;
 }
 
 dialog textarea{

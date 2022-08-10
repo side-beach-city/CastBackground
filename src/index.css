@@ -49,6 +49,7 @@ body {
 }
 
 button#startup_button {
+  position: absolute;
   padding: 6px 12px;
   margin: 18px;
 }

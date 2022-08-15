@@ -9,9 +9,7 @@ window.x_debugmode = false;
 
 let activeData;
 
-initSaveControl({ "bgmvolume": 1.0 });
-
-window.onload = (e) => {
+initSaveControl({ "bgmvolume": 1.0 }, () => {
   set_zoomlevel(1.0, true);
   dragDropSupport(".droppable");
   let queue = document.getElementById("queue");
@@ -25,7 +23,7 @@ window.onload = (e) => {
   // ドロップダウンメニューにおけるチェックボックスクリック時のポップアップ解除を行なわない
   $('.custom-switch').on('click.bs.dropdown.data-api', (event) => event.stopPropagation());
   $('#version').on('click.bs.dropdown.data-api', (event) => event.stopPropagation());
-};
+});
 
 window.onbeforeunload  = (e) => {
   localStorage.setItem(SETTING_CUSTOMCSS, document.getElementById("custom-css").value);

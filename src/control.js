@@ -1,9 +1,6 @@
 import { QueueListItem, initButtonBars } from "./queueitem.js";
-const SETTING_AUTOPLAY = "autoplay";
-const SETTING_CONTROLS = "controls";
+import { initSaveControl } from "./savecontrol.js";
 const SETTING_DEBUG = "debug";
-const SETTING_BGMPLAY = "bgm";
-const SETTING_BGMVOL = "bgmvolume";
 const SETTING_CUSTOMCSS = "customcss";
 const BGMUSIC_ID = "bgmusic_elem";
 const APPNAME = "CastBackground";
@@ -12,20 +9,14 @@ window.x_debugmode = false;
 
 let activeData;
 
+initSaveControl({ "bgmvolume": 1.0 });
+
 window.onload = (e) => {
   set_zoomlevel(1.0, true);
   dragDropSupport(".droppable");
   let queue = document.getElementById("queue");
   queue.addEventListener("dblclick", loadQueue);
-  let control_chk = document.getElementById("controls");
-  let autoplay_chk = document.getElementById("autoplay");
-  let playbgm_chk = document.getElementById("playbgm");
-  let playvolume = document.getElementById("bgmvolume");
   let customcss = document.getElementById("custom-css");
-  control_chk.checked = localStorage.getItem(SETTING_CONTROLS) === "true";
-  autoplay_chk.checked = localStorage.getItem(SETTING_AUTOPLAY) === "true";
-  playbgm_chk.checked = localStorage.getItem(SETTING_BGMPLAY) === "true";  
-  playvolume.value = localStorage.getItem(SETTING_BGMVOL) ? localStorage.getItem(SETTING_BGMVOL) : 1.0;
   window.opener.document.getElementById("custom-css").textContent = customcss.value = localStorage.getItem(SETTING_CUSTOMCSS);
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
@@ -37,10 +28,6 @@ window.onload = (e) => {
 };
 
 window.onbeforeunload  = (e) => {
-  localStorage.setItem(SETTING_CONTROLS, document.getElementById("controls").checked);
-  localStorage.setItem(SETTING_AUTOPLAY, document.getElementById("autoplay").checked);
-  localStorage.setItem(SETTING_BGMPLAY, document.getElementById("playbgm").checked);
-  localStorage.setItem(SETTING_BGMVOL, document.getElementById("bgmvolume").value);
   localStorage.setItem(SETTING_CUSTOMCSS, document.getElementById("custom-css").value);
   if(!window.x_ownerunload){
     e.preventDefault();
@@ -81,10 +68,10 @@ document.getElementById("controls").addEventListener("change", (e) => {
   }
 });
 
-document.getElementById("playbgm").addEventListener("click", (e) => {
+document.getElementById("bgm").addEventListener("click", (e) => {
   let bgm;
   if(bgm = window.opener.document.getElementById(BGMUSIC_ID)){
-    if(document.getElementById("playbgm").checked){
+    if(document.getElementById("bgm").checked){
       bgm.currentTime = 0;
       bgm.play();
     }else{

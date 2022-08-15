@@ -12,11 +12,15 @@ export function initSaveControl(values, onValueLoaded) {
 }
 
 window.addEventListener("load", (e) => {
+  const radiobox_names = [];
   Array.from(document.getElementsByClassName("savecontrol")).forEach((e) => {   
     const v = localStorage.getItem(e.id) ? localStorage.getItem(e.id) : (defaultValues[e.id] !== undefined ? defaultValues[e.id] : "");
     switch (e.type) {
       case "checkbox":
         e.checked = v == "true";
+        break;
+      case "radio":
+        if(!radiobox_names.includes(e.name)) radiobox_names.push(e.name);
         break;
       default:
         e.value = v;
@@ -26,14 +30,22 @@ window.addEventListener("load", (e) => {
       let v;
       switch (e.target.type) {
         case "checkbox":
-          v = e.target.checked ? "true" : "false";
+          localStorage.setItem(e.target.id, e.target.checked ? "true" : "false");
+          break;
+        case "radio":
+          localStorage.setItem(e.target.name, e.target.value);
           break;
         default:
-          v = e.target.value;
+          localStorage.setItem(e.target.id, e.target.value);
           break;
       }
-      localStorage.setItem(e.target.id, v);
     });
+  });
+  radiobox_names.forEach((n) => {
+    const v = localStorage.getItem(n);
+    let c = Array.from(document.getElementsByName(n)).find((e) => e.value == v);
+    if(!c) c = Array.from(document.getElementsByName(n)).find((e) => e.value == defaultValues[n]);
+    if(c) c.checked = true;
   });
   if(valueLoaded) valueLoaded();
 });

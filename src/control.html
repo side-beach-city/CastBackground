@@ -83,6 +83,58 @@
 
         </div>
 
+        <div class="dropdown dropup">
+          <button type="button" id="config"
+            class="btn btn-sm btn-secondary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">↖️</button>
+
+          <div class="dropdown-menu" aria-labelledby="config">
+
+            <div class="dropdown-item">
+              <div class="custom-control custom-switch" title="マウスカーソルの表示">
+                <input type="checkbox" id="pointer-visible" class="custom-control-input savecontrol">
+                <label class="custom-control-label" for="pointer-visible">カーソル表示</label>
+              </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <div class="dropdown-item">
+              <div class="custom-control custom-switch" title="ポインタ強調：なし">
+                <input type="radio" id="pointer-none" value="none" name="pointer-emphasis" class="custom-control-input savecontrol">
+                <label class="custom-control-label" for="pointer-none">ポインタ強調：なし</label>
+              </div>
+            </div>
+
+            <div class="dropdown-item">
+              <div class="custom-control custom-switch" title="ポインタ強調：黒丸">
+                <input type="radio" id="pointer-disc" value="disc" name="pointer-emphasis" class="custom-control-input savecontrol">
+                <label class="custom-control-label" for="pointer-disc">ポインタ強調：黒丸</label>
+              </div>
+            </div>
+
+            <div class="dropdown-item">
+              <div class="custom-control custom-switch" title="ポインタ強調：点線">
+                <input type="radio" id="pointer-circle" value="circle" name="pointer-emphasis" class="custom-control-input savecontrol">
+                <label class="custom-control-label" for="pointer-circle">ポインタ強調：点線</label>
+              </div>
+            </div>
+
+            <div class="dropdown-item">
+              <div class="custom-control custom-switch" title="ポインタ強調：バブル">
+                <input type="radio" id="pointer-bubble" value="bubble" name="pointer-emphasis" class="custom-control-input savecontrol">
+                <label class="custom-control-label" for="pointer-bubble">ポインタ強調：バブル</label>
+              </div>
+            </div>
+
+            <div class="dropdown-item">
+              <p id="version"></p>
+            </div>
+
+          </div>
+
       </div>
 
       <div id="typecontrols" class="subcontrolbar">

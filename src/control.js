@@ -9,7 +9,11 @@ window.x_debugmode = false;
 
 let activeData;
 
-initSaveControl({ "bgmvolume": 1.0 }, () => {
+initSaveControl({ 
+  "bgmvolume": 1.0,
+  "pointer-visible": "true",
+  "pointer-emphasis": "none"
+}, () => {
   set_zoomlevel(1.0, true);
   dragDropSupport(".droppable");
   let queue = document.getElementById("queue");

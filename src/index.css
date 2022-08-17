@@ -3,6 +3,7 @@ body {
   overflow: visible;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
 }
 #display {
   height: 100%;
@@ -53,3 +54,94 @@ button#startup_button {
   padding: 6px 12px;
   margin: 18px;
 }
+
+/* #region ポインタ協調 */
+#pointer{
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border-radius: 50%;
+  transition: 0.1s;
+  transition-timing-function: ease-out;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#pointer.mousedown{
+  width: 50px !important;
+  height: 50px !important;
+  transition: none; 
+}
+
+#pointer.mouseon{
+  width: 25px;
+  height: 25px;
+  transition: none;
+}
+
+.disc #pointer{
+  background: rgba(0, 0, 0, 0.5);
+}
+.disc #pointer:before {
+  content: "";
+  position: absolute;
+  clip-path: circle(30%);
+  left: 0px;
+  top: 0px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  border-width: 0;
+  background: radial-gradient(#0004 0%, #000A 60%, #0006 100%);
+  animation: pointerAnimation 1s infinite linear;
+}
+.disc #pointer.mousedown:before {
+  left: 0px;
+  top: 0px;
+  width: 50px;
+  height: 50px;
+}
+
+.circle #pointer{
+  background-color: rgba(255, 128, 128, 0.1);
+  border: 3px dashed rgba(255, 128, 128, 0.7);
+  animation: borderAnimation 3s infinite linear;
+}
+.circle #pointer.mouseon{
+  width: 30px;
+  height: 30px;
+}
+.circle #pointer.mousedown{
+  width: 60px !important;
+  height: 60px !important;
+}
+.circle #pointer:not(.mouseon){
+  border: 0;
+}
+
+.bubble #pointer{
+  background: #AAFA;
+  border: 4px solid #AAFF;
+  animation: pointerAnimation 1s infinite linear;
+}
+
+@keyframes borderAnimation {
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+
+@keyframes pointerAnimation{
+  0%{
+    transform: scale(0.5);
+  }
+  100%{
+    transform:scale(1.5);
+    opacity: 0;
+  }
+}
+/* #endregion */

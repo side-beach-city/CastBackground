@@ -110,6 +110,10 @@ document.getElementById("pointer-visible").addEventListener("change", (e) => {
   window.opener.document.body.style.cursor = e.target.checked ? "default" : "none";
 });
 
+document.querySelectorAll("input[name=pointer-emphasis]").forEach(v => v.addEventListener("change", (e) => {
+  window.opener.document.body.className = e.target.value;
+}));
+
 //#endregion
 
 //#region Audio、Videoコントロールバー処理

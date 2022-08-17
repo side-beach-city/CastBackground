@@ -18,15 +18,16 @@ window.addEventListener("load", (e) => {
     switch (e.type) {
       case "checkbox":
         e.checked = v == "true";
+        e.dispatchEvent(new Event("change"));
         break;
       case "radio":
         if(!radiobox_names.includes(e.name)) radiobox_names.push(e.name);
         break;
       default:
         e.value = v;
+        e.dispatchEvent(new Event("change"));
         break;
     }
-    e.dispatchEvent(new Event("change"));
     e.addEventListener("change", (e) => {
       let v;
       switch (e.target.type) {
@@ -47,6 +48,7 @@ window.addEventListener("load", (e) => {
     let c = Array.from(document.getElementsByName(n)).find((e) => e.value == v);
     if(!c) c = Array.from(document.getElementsByName(n)).find((e) => e.value == defaultValues[n]);
     if(c) c.checked = true;
+    c.dispatchEvent(new Event("change"));
   });
   if(valueLoaded) valueLoaded();
 });

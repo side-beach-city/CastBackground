@@ -26,6 +26,7 @@ window.addEventListener("load", (e) => {
         e.value = v;
         break;
     }
+    e.dispatchEvent(new Event("change"));
     e.addEventListener("change", (e) => {
       let v;
       switch (e.target.type) {

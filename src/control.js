@@ -106,6 +106,10 @@ document.getElementById("custom-css").addEventListener("input", (e) => {
   window.opener.document.getElementById("custom-css").textContent = document.getElementById("custom-css").value;
 });
 
+document.getElementById("pointer-visible").addEventListener("change", (e) => {
+  window.opener.document.body.style.cursor = e.target.checked ? "default" : "none";
+});
+
 //#endregion
 
 //#region Audio、Videoコントロールバー処理

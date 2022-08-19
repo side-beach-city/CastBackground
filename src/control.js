@@ -388,9 +388,11 @@ function loadQueue(e) {
     // ビデオ・オーディオ時の更新処理追加
     if(data.isPlayable){
       let media = window.opener.document.querySelector(".content");
-      if(activeData.status > 0){
-        media.currentTime = activeData.status;
-      }
+      media.addEventListener("durationchange", (e) => {
+        if(activeData.status > 0 && activeData.status < media.duration - 2){
+          media.currentTime = activeData.status;
+        }  
+      });
       media.addEventListener("timeupdate", (e) => {
         if(media && typeof media.duration == "number" && typeof media.currentTime == "number"){
           let queue = document.getElementById("queue");

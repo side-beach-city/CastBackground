@@ -82,7 +82,7 @@ button#startup_button {
 .disc #pointer{
   background: rgba(0, 0, 0, 0.5);
 }
-.disc #pointer:before {
+.disc #pointer.mouseon:before {
   content: "";
   position: absolute;
   clip-path: circle(30%);

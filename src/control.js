@@ -392,7 +392,7 @@ function loadQueue(e) {
         media.currentTime = activeData.status;
       }
       media.addEventListener("timeupdate", (e) => {
-        if(media && media.duration !== undefined && media.currentTime !== undefined){
+        if(media && typeof media.duration == "number" && typeof media.currentTime == "number"){
           let queue = document.getElementById("queue");
           let index = Array.from(queue.options).findIndex(e => JSON.parse(e.value).name == media.dataset.name);
           if(index != -1){

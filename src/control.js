@@ -4,7 +4,7 @@ const SETTING_DEBUG = "debug";
 const SETTING_CUSTOMCSS = "customcss";
 const BGMUSIC_ID = "bgmusic_elem";
 const APPNAME = "CastBackground";
-const APPVERSION = "1.6.0";
+const APPVERSION = "1.7.0";
 window.x_debugmode = false;
 
 let activeData;

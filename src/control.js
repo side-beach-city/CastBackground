@@ -22,7 +22,9 @@ initSaveControl({
   window.opener.document.getElementById("custom-css").textContent = customcss.value = localStorage.getItem(SETTING_CUSTOMCSS);
   window.x_debugmode = localStorage.getItem(SETTING_DEBUG) === "true";
   window.x_ownerunload = false;
-  document.getElementById("version").textContent = `${APPNAME} Version ${APPVERSION}.`;
+  const versionp = document.getElementById("version");
+  versionp.textContent = `${APPNAME} Version ${APPVERSION}.`;
+  versionp.addEventListener("click", e => window.open("https://github.com/side-beach-city/CastBackground/", "_blank"));
   initButtonBars();
   // ドロップダウンメニューにおけるチェックボックスクリック時のポップアップ解除を行なわない
   $('.custom-switch').on('click.bs.dropdown.data-api', (event) => event.stopPropagation());
